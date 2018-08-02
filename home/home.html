@@ -1,0 +1,51 @@
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>home</title>
+    <link rel="stylesheet" type="text/css" href="home.css">
+  </head>
+  <body>
+    <div id="login">
+        Articlog Login<br><br>
+        mail<input id="mail" type="text" /><br>
+        password<input id="password" type="password" /><br>
+        <button onclick="login.certification();">login</button>    
+    </div>
+    <div id="sign-up">
+      sign up<br><br>
+      name<input id="sign_up_name" type="text" /><br>
+      mail<input id="sign_up_mail" type="text" /><br>
+      password<input id="sign_up_password" type="password" /><br>
+      <button onclick="login.sign_up();">sign up</button>
+    </div>
+    <div id="home" style="visibility:hidden;">
+      <header>
+        <a class="square_btn" onclick="home.home();">home</a>
+      </header>
+      <div id="contents">
+        <nav>
+          <h2><a class="square_btn" onclick="home.init_write_article();">記事作成</a></h2>
+          <h2><a class="square_btn" onclick="home.init_write_css();">CSS作成</a></h2>
+          <h2><a class="square_btn" onclick="home.init_write_template();">テンプレート</a></h2>
+          <h2><a class="square_btn" onclick="home.init_write_js();">js作成</a></h2>
+          <h2><a class="square_btn" onclick="home.init_article_list();">記事一覧</a></h2>
+          <h2><a class="square_btn" onclick="home.image_upload();">画像アップロード</a></h2>
+          <h2><a class="square_btn" onclick="home.image_list();">画像リスト</a></h2>
+          <h2><a class="square_btn" onclick="home.plugin();">プラグイン</a></h2>
+          <h2><a class="square_btn" onclick="home.setting();">設定</a></h2>
+        </nav>
+        <article id="article"></article>
+<!--      <iframe id="iframe" name="iframe" src="top.html"></iframe>  -->
+      </div>
+    </div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>
+    <script src="login.js" type="text/javascript"></script>
+    <script src="home.js" type="text/javascript"></script>
+    <script>
+      let login = new Login(io());
+      let home = new Home();
+    </script>
+  </body>
+</html>
