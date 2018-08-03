@@ -91,14 +91,12 @@ class Home {
     this.div.appendChild(this.iframe);
     this.article.appendChild(this.div);
 
-    const sendData = {
-      content: this.textarea.value,
-      link:    this.inputLink.value,
-      title:   this.inputTitle.value
-    }
-
     this.buttonPublish.addEventListener('click', () => {
-      this.socket.emit('publish', sendData);
+      this.socket.emit('publish', {
+        content: this.textarea.value,
+        link:    this.inputLink.value,
+        title:   this.inputTitle.value
+      });
     }); 
   }
   init_write_css() {
