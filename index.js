@@ -113,6 +113,7 @@ io.sockets.on('connection', (socket) => {
       const db = client.db(dbName);
       insertArticle(db, publishData, () => {
         linkArticle();
+        socket.emit('published', publishData);
         // findDocuments(db, function() {
         //   client.close();
         // });

@@ -1,7 +1,7 @@
 class Home {
   constructor(socket) {
     this.socket = socket;
-    this.socket.on('connect', function () {
+    this.socket.on('connect', () => {
     });
     this.article  = document.getElementById('article');
     this.div      = document.createElement('div');
@@ -98,6 +98,19 @@ class Home {
         link:    this.inputLink.value,
         title:   this.inputTitle.value
       });
+    });
+    this.socket.on('published', (data) => {
+
+      const linkCard = document.createElement('div');
+      linkCard.style.position = "absolute";
+      linkCard.style.top = "400px";
+      linkCard.style.left = "400px";
+      linkCard.style.width = "400px";
+      linkCard.style.height = "200px";
+      linkCard.style.background = "#aaa";
+      linkCard.innerHTML = "<a href='https://articlog.com/" + data.link + "'>" + data.title + "</a>";
+
+      document.body.appendChild(linkCard);
     }); 
   }
   init_write_css() {
