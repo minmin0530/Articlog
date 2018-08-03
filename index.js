@@ -101,6 +101,11 @@ io.sockets.on('connection', (socket) => {
         });
     });
   });
+  socket.on('publish', (publishData) => {
+    console.log(publishData.link);
+    console.log(publishData.title);
+    console.log(publishData.connect);
+  });
 });
 app.get('/', (req, res) => {
   res.send("hello world!");// res.sendFile(__dirname + '/html/index.html');

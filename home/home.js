@@ -1,5 +1,8 @@
 class Home {
-  constructor() {
+  constructor(socket) {
+    this.socket = socket;
+    this.socket.on('connect', function () {
+    });
     this.article  = document.getElementById('article');
     this.div      = document.createElement('div');
     this.buttonDiv= document.createElement('div');
@@ -13,7 +16,7 @@ class Home {
     this.inputTitle = document.createElement('input');
     this.spanLink  = document.createElement('span');
     this.spanTitle = document.createElement('span');
-    this.buttonPrevie  = document.createElement('button');
+    this.buttonPreview  = document.createElement('button');
     this.buttonSave    = document.createElement('button');
     this.buttonPublish = document.createElement('button');
 
@@ -43,9 +46,9 @@ class Home {
     this.buttonDiv.style.display = 'flex';
     this.buttonDiv.style.width = '400px';
 
-    this.buttonPrevie.textContent = 'プレビュー';
-    this.buttonPrevie.className = 'square_btn';
-    this.buttonPrevie.style.width = '100px';
+    this.buttonPreview.textContent = 'プレビュー';
+    this.buttonPreview.className = 'square_btn';
+    this.buttonPreview.style.width = '100px';
 
     this.buttonSave.textContent = '保存';
     this.buttonSave.className = 'square_btn';
@@ -77,7 +80,7 @@ class Home {
 
     this.article.innerHTML = '';
 
-    this.buttonDiv.appendChild(this.buttonPrevie);
+    this.buttonDiv.appendChild(this.buttonPreview);
     this.buttonDiv.appendChild(this.buttonSave);
     this.buttonDiv.appendChild(this.buttonPublish);
     this.buttonDiv.style.marginLeft = '400px';
@@ -87,6 +90,16 @@ class Home {
     this.div.appendChild(this.textarea);
     this.div.appendChild(this.iframe);
     this.article.appendChild(this.div);
+
+    const sendData = {
+      content: this.textarea.value,
+      link:    this.inputLink.value,
+      title:   this.inputTitle.value
+    }
+
+    this.buttonPublish.addEventListener('click', () => {
+      this.socket.emit('publish', sendData);
+    }); 
   }
   init_write_css() {
     this.textarea.style.margin = "20px";
