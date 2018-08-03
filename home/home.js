@@ -93,6 +93,7 @@ class Home {
 
     this.buttonPublish.addEventListener('click', () => {
       this.socket.emit('publish', {
+        time:    new Date().toLocaleString(),
         content: this.textarea.value,
         link:    this.inputLink.value,
         title:   this.inputTitle.value

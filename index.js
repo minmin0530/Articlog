@@ -11,7 +11,14 @@ const dbName = 'myproject';
  
 const insertAccount = function(db, account, callback) {
   const collection = db.collection('documents');
-  collection.insert(account, function(err, result) {
+  collection.insert(account, (err, result) => {
+    callback(result);
+  });
+}
+
+const insertArticle = function(db, article, callback) {
+  const collection = db.collection('documents');
+  collection.insert(article, (err, result) => {
     callback(result);
   });
 }
@@ -94,17 +101,26 @@ io.sockets.on('connection', (socket) => {
   socket.on('signUpData', (signUpData) => {
     MongoClient.connect(url, {useNewUrlParser: true}, function(err, client) {     
       const db = client.db(dbName);
-        insertAccount(db, signUpData, function() {
-          findDocuments(db, function() {
-            client.close();
-          });
+      insertAccount(db, signUpData, function() {
+        findDocuments(db, function() {
+          client.close();
         });
+      });
     });
   });
   socket.on('publish', (publishData) => {
+    console.log(publishData.time);
     console.log(publishData.link);
     console.log(publishData.title);
-    console.log(publishData.connect);
+    console.log(publishData.content);
+    MongoClient.connect(url, {useNewUrlParser: true}, function(err, client) {     
+      const db = client.db(dbName);
+      insertArticle(db, publishData, function() {
+        findDocuments(db, function() {
+          client.close();
+        });
+      });
+    });
   });
 });
 app.get('/', (req, res) => {
