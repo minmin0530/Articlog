@@ -10,20 +10,20 @@ const url = 'mongodb://localhost:27017';
 const dbName = 'myproject';
  
 const insertAccount = function(db, account, callback) {
-  const collection = db.collection('documents');
+  const collection = db.collection('account');
   collection.insert(account, (err, result) => {
     callback(result);
   });
 }
 
 const insertArticle = function(db, article, callback) {
-  const collection = db.collection('documents');
+  const collection = db.collection('article');
   collection.insert(article, (err, result) => {
     callback(result);
   });
 }
 
-
+/*
 const insertDocuments = function(db, callback) {
   // Get the documents collection
   const collection = db.collection('documents');
@@ -41,7 +41,7 @@ const insertDocuments = function(db, callback) {
 
 const findDocuments = function(db, callback) {
   // Get the documents collection
-  const collection = db.collection('documents');
+  const collection = db.collection('account');
   // Find some documents
   collection.find({}).toArray(function(err, docs) {
     assert.equal(err, null);
@@ -74,7 +74,7 @@ const removeAllDocument = function(db, callback) {
     callback(result);
   });    
 }
-
+*/
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/articlog.com/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/articlog.com/fullchain.pem')
@@ -85,13 +85,13 @@ const server = https.createServer(options, app);
 const io = require('socket.io')(server);
 io.sockets.on('connection', (socket) => {
   socket.on('loginData', (loginData) => {
-    MongoClient.connect(url, {useNewUrlParser: true}, function(err, client) {
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
       const db = client.db(dbName);
-      const collection = db.collection('documents');
-      collection.find({}).toArray(function(err, docs) {
+      const collection = db.collection('account');
+      collection.find({}).toArray( (err, docs) => {
         for (const doc of docs) {
           if (loginData.mail == doc.mail && loginData.password == doc.password) {
-            socket.emit('login_home', 'user_yoshiki');
+            socket.emit('login_home', doc.name);
             break;
           }
         }
@@ -99,30 +99,42 @@ io.sockets.on('connection', (socket) => {
     });
   });
   socket.on('signUpData', (signUpData) => {
-    MongoClient.connect(url, {useNewUrlParser: true}, function(err, client) {     
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
-      insertAccount(db, signUpData, function() {
-        findDocuments(db, function() {
-          client.close();
-        });
+      insertAccount(db, signUpData, () => {
+        // findDocuments(db, function() {
+        //   client.close();
+        // });
       });
     });
   });
   socket.on('publish', (publishData) => {
-    console.log(publishData.time);
-    console.log(publishData.link);
-    console.log(publishData.title);
-    console.log(publishData.content);
-    MongoClient.connect(url, {useNewUrlParser: true}, function(err, client) {     
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
-      insertArticle(db, publishData, function() {
-        findDocuments(db, function() {
-          client.close();
-        });
+      insertArticle(db, publishData, () => {
+        linkArticle();
+        // findDocuments(db, function() {
+        //   client.close();
+        // });
       });
     });
   });
 });
+
+function linkArticle() {
+  MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
+    const db = client.db(dbName);
+    const collection = db.collection('article');
+    collection.find({}).toArray( (err, docs) => {
+      for (const doc of docs) {
+        app.get('/' + doc.link, (req, res) => {
+          res.send(doc.content);
+        });
+      }
+    });
+  });
+}
+linkArticle();
 app.get('/', (req, res) => {
   res.send("hello world!");// res.sendFile(__dirname + '/html/index.html');
 });
