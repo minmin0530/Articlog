@@ -136,9 +136,10 @@ function linkArticle() {
   });
 }
 linkArticle();
-app.get('/', (req, res) => {
-  res.send("hello world!");// res.sendFile(__dirname + '/html/index.html');
-});
+app.get('/', (req, res) => {  res.sendFile(__dirname + '/webgl/index.html'); });
+app.get('/all.js', (req, res) => {  res.sendFile(__dirname + '/webgl/all.js'); });
+app.get('/src/shader/vertex.vs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/vertex.vs'); });
+app.get('/src/shader/fragment.fs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/fragment.fs'); });
 app.get('/index.css', (req, res) => {  res.sendFile(__dirname + '/css/index.css'); });
 app.get('/s_author.JPG', (req, res) => {  res.sendFile(__dirname + '/img/s_author.JPG'); });
 app.get('/s_author.png', (req, res) => {  res.sendFile(__dirname + '/img/s_author.png'); });

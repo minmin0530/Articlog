@@ -1,0 +1,79 @@
+<html>
+  <head>
+    <title>ai6gl</title>
+  </head>
+  <body>
+    <canvas id='canvas' width='640' height='480'></canvas>
+    <!--
+    <script src='matrix.js'></script>
+    <script src='bevelcube.js'></script>
+    <script src='cube.js'></script>
+    <script src='octahedron.js'></script>
+    <script src='octahedron2.js'></script>
+    <script src='octahedron3.js'></script>
+    <script src='grass.js'></script>
+    <script src='ai6gl.js'></script>
+    -->
+    <script src='all.js'></script>
+    <script>
+      const ai6 = new AI6GL();
+      const object1 = new Grass();
+      const object2 = new Cube();
+      const object3 = new BevelCube();
+      const object4 = new Octahedron2();
+      const cubeArray = [];
+      const CUBE_NUM = 64;
+      const CUBE_NUM_3 = 4;
+      let i = 0;
+      for (let j = 0; j < CUBE_NUM_3; ++j) {
+      for (let k = 0; k < CUBE_NUM_3; ++k) {
+      for (let l = 0; l < CUBE_NUM_3; ++l) {
+        cubeArray.push(new BevelCube() );
+        cubeArray[i].setPosition((j-2.0) * 15.0, (k+1.0) * 15.0, (l-2.0) * 15.0);
+        ai6.addObject(cubeArray[i]);
+        ++i;
+      }
+      }
+      }
+      const light = [0.0, 0.0, 0.0];
+      const eye = [0.0, 30.0, 80.0];
+      const target = [0.0, 0.0, 0.0];
+      const up = [0.0, 1.0, 0.0];
+      
+      object1.setPosition( 3.0, 0.0, 0.0);
+      object2.setPosition(-3.0, 0.0, 0.0);
+//      object4.setPosition( 3.5, 0.0, 0.0);
+      ai6.addObject( object1 );
+      // ai6.addObject( object2 );
+      // ai6.addObject( object3 );
+      // ai6.addObject( object4 );
+      ai6.addLight(light);
+      ai6.setCamera(eye, target, up);
+      
+      ai6.fetchShader(ai6.GL, mainLoop);
+
+      this.time = 0.0;
+      function mainLoop() {
+        this.time += 0.01;
+        light[0] = Math.cos(this.time*0.1) * 100;
+        light[1] = 30.0;
+        light[2] = Math.sin(this.time*0.1) * 100;
+        eye[0] = Math.cos(this.time*-0.5) * 70;
+        eye[1] = 70.0;
+        eye[2] = Math.sin(this.time*-0.5) * 70;
+        // // light[0] = 0.0;
+        ai6.draw(ai6.GL);
+        requestAnimationFrame( mainLoop );
+        object1.update();
+        for (let l = 0; l < CUBE_NUM; ++l) {
+          cubeArray[l].update();
+        }
+
+        // object2.update();
+        // object3.update();
+        // object4.update();
+      }
+
+    </script>
+  </body>
+</html>
