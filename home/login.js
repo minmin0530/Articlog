@@ -5,7 +5,11 @@ class Login {
     this.socket.on('connect', function () {
     });
     this.socket.on('login_home', function () {
+
       document.getElementById('home').style.visibility = 'visible';
+      document.getElementById('login-sign-up').style.visibility = 'hidden';
+      document.getElementById('login-sign-up').style.width = '0px';
+      document.getElementById('login-sign-up').style.height = '0px';
       document.getElementById('login').style.visibility = 'hidden';
       document.getElementById('login').style.width = '0px';
       document.getElementById('login').style.height = '0px';
