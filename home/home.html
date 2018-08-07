@@ -5,19 +5,21 @@
     <link rel="stylesheet" type="text/css" href="home.css">
   </head>
   <body>
-    <span id="login" style="padding-right: 200px;">
+    <div style="display: flex;">
+      <div id="login" style="padding-right: 300px;">
         Articlog Login<br><br>
         mail<input id="mail" type="text" /><br>
         password<input id="password" type="password" /><br>
         <button onclick="login.certification();">login</button>    
-    </span>
-    <span id="sign-up">
-      sign up<br><br>
-      name<input id="sign_up_name" type="text" /><br>
-      mail<input id="sign_up_mail" type="text" /><br>
-      password<input id="sign_up_password" type="password" /><br>
-      <button onclick="login.sign_up();">sign up</button>
-    </span>
+      </div>
+      <div id="sign-up">
+        sign up<br><br>
+        name<input id="sign_up_name" type="text" /><br>
+        mail<input id="sign_up_mail" type="text" /><br>
+        password<input id="sign_up_password" type="password" /><br>
+        <button onclick="login.sign_up();">sign up</button>
+      </div>
+    </div>
     <div id="home" style="visibility:hidden;">
       <header>
         <a class="square_btn" onclick="home.home();">home</a>
