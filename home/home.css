@@ -87,12 +87,14 @@ iframe {
 }
 
 #login {
+  margin: 50px;
   padding: 50px;
   border: solid 1px #000000;
   border-radius: 10px 10px 10px 10px;
 }
 
 #sign-up {
+  margin: 50px;
   padding: 50px;
   border: solid 1px #000000;
   border-radius: 10px 10px 10px 10px;
