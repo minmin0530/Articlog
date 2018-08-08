@@ -20,6 +20,23 @@ class Home {
     this.buttonSave    = document.createElement('button');
     this.buttonPublish = document.createElement('button');
 
+    this.uploadDiv = document.createElement('div');
+    this.form = document.createElement('form');
+    this.inputFile = document.createElement('input');
+    this.inputSubmit = document.createElement('input');
+
+    this.inputFile.type = 'file';
+    this.inputFile.name = 'file';
+    this.inputSubmit.type = 'submit';
+    this.inputSubmit.value = 'Upload File';
+    this.form.action = 'file_upload';
+    this.form.method = 'POST';
+    this.form.enctype = 'multipart/form-data';
+
+    this.form.appendChild(this.inputFile);
+    this.form.appendChild(this.inputSubmit);
+    this.uploadDiv.appendChild(this.form);
+
     this.inputButtonDiv.style.display = 'flex';
     this.inputButtonDiv.style.width = '100%';
     
@@ -140,7 +157,9 @@ class Home {
   }
   article_list(url_txt) {
   }
-  image_upload() {
+  upload() {
+    this.article.innerHTML = '';
+    this.article.appendChild(this.uploadDiv);
   }
   image_list() {
   }
