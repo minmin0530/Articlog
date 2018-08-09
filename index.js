@@ -146,25 +146,25 @@ app.post('/file_upload', (req, res) => {
   var file = __dirname + "/" + req.file.originalname;
 
   fs.readFile(req.file.path, (err, data) => {
-    let buffer;
-    if (Buffer.isBuffer(data)) {
-      buffer = data;
-    } else {
-      buffer = new Buffer(data.toString(), 'binary');
-    }
-    console.log( buffer.toString('base64') );
+    // let buffer;
+    // if (Buffer.isBuffer(data)) {
+    //   buffer = data;
+    // } else {
+    //   buffer = new Buffer(data.toString(), 'binary');
+    // }
+    console.log( data.toString() );
 //    res.send(data);
       // fs.writeFile(file, data, function (err) {
       //     if (err) {
       //         console.log(err);
       //     } else {
-      //         response = {
-      //             message: 'Success!',
-      //             filename: req.file.originalname
-      //         };
+            let response = {
+                  message: 'Success!',
+                  filename: req.file.originalname
+              };
       //     }
       //     console.log(response);
-      //     res.end(JSON.stringify(response));
+           res.end(JSON.stringify(response));
       // });
   });
 });
