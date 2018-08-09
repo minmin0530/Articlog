@@ -146,7 +146,8 @@ app.post('/file_upload', (req, res) => {
   var file = __dirname + "/" + req.file.originalname;
 
   fs.readFile(req.file.path, (err, data) => {
-    res.send(data);
+    console.log(data);
+//    res.send(data);
       // fs.writeFile(file, data, function (err) {
       //     if (err) {
       //         console.log(err);
