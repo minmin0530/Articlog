@@ -169,36 +169,6 @@ app.post('/file_upload', (req, res) => {
   });
 });
 
-fs.readFile(req.file.path, function (err, data) {
-  var buffer;
-  if (Buffer.isBuffer(data)) {
-    buffer = data;
-  } else {
-    buffer = new Buffer(data.toString(), 'binary');
-  }
-  imageModel.data = buffer.toString('base64');
-  imageModel.name = req.file.originalname;
-  imageModel.accountName = req.session.username;
-  imageModel.save(function(err){if(err){console.log(err); throw err;} });
-
-  fs.writeFile(file, data, function (err) {
-    if (err) {
-      console.log(err);
-    } else {
-      Image.findOne({'name': req.file.originalname }, (err, result) => {
-        if (!result) {
-        } else {
-          res.send("<img src='data:image/png;base64," + result.data + "'>");
-        }
-      });
-    }
-  });
-});
-
-
-
-
-
 app.get('/', (req, res) => {  res.sendFile(__dirname + '/webgl/index.html'); });
 app.get('/all.js', (req, res) => {  res.sendFile(__dirname + '/webgl/all.js'); });
 app.get('/src/shader/vertex.vs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/vertex.vs'); });
