@@ -136,6 +136,27 @@ function linkArticle() {
   });
 }
 linkArticle();
+
+app.post('/file_upload', (req, res) => {
+  var file = __dirname + "/" + req.file.originalname;
+
+  fs.readFile(req.file.path, (err, data) => {
+    res.send(data);
+      // fs.writeFile(file, data, function (err) {
+      //     if (err) {
+      //         console.log(err);
+      //     } else {
+      //         response = {
+      //             message: 'Success!',
+      //             filename: req.file.originalname
+      //         };
+      //     }
+      //     console.log(response);
+      //     res.end(JSON.stringify(response));
+      // });
+  });
+});
+
 app.get('/', (req, res) => {  res.sendFile(__dirname + '/webgl/index.html'); });
 app.get('/all.js', (req, res) => {  res.sendFile(__dirname + '/webgl/all.js'); });
 app.get('/src/shader/vertex.vs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/vertex.vs'); });
