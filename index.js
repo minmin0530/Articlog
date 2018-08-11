@@ -94,6 +94,71 @@ const server = https.createServer(options, app);
 
 const io = require('socket.io')(server);
 io.sockets.on('connection', (socket) => {
+
+
+
+  app.post('/file_upload', (req, res) => {
+    var file = __dirname + "/" + req.file.originalname;
+  
+    fs.readFile(req.file.path, (err, data) => {
+      MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
+        const db = client.db(dbName);
+        const collection = db.collection('src');
+        collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
+          if (docs.length > 0) {
+            console.log(docs.length + "update " + req.file.originalname);
+            collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
+                console.log('updateSrcEvent1');
+                socket.emit('updateSrcEvent');
+                socket.on('updateSrcEvent', () => {
+                  console.log('updateSrcEvent2');
+  
+                  linkSrc();
+                });
+            });
+          } else {
+            console.log("insert " + req.file.originalname );
+            const insertData = {
+              content: data.toString(),
+              link: req.file.originalname,
+              time: new Date().toLocaleString()
+            };
+            insertSrc(db, insertData, () => {
+              linkSrc();
+            });
+          }
+        });
+      });
+      // let buffer;
+      // if (Buffer.isBuffer(data)) {
+      //   buffer = data;
+      // } else {
+      //   buffer = new Buffer(data.toString(), 'binary');
+      // }
+  //    res.send(data);
+        // fs.writeFile(file, data, function (err) {
+        //     if (err) {
+        //         console.log(err);
+        //     } else {
+              let response = {
+                    message: 'Success!',
+                    filename: req.file.originalname
+                };
+        //     }
+        //     console.log(response);
+             res.end(JSON.stringify(response));
+        // });
+    });
+  });
+  
+
+
+
+
+
+
+
+
   socket.on('loginData', (loginData) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
       const db = client.db(dbName);
@@ -162,62 +227,6 @@ function linkArticle() {
 }
 linkArticle();
 
-app.post('/file_upload', (req, res) => {
-  var file = __dirname + "/" + req.file.originalname;
-
-  fs.readFile(req.file.path, (err, data) => {
-    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
-      const db = client.db(dbName);
-      const collection = db.collection('src');
-      collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
-        if (docs.length > 0) {
-          console.log(docs.length + "update " + req.file.originalname);
-          collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
-            console.log('updateSrcEvent1');
-            io.sockets.on('connection', (socket) => {
-              console.log('updateSrcEvent2');
-              socket.emit('updateSrcEvent');
-              socket.on('updateSrcEvent', () => {
-                console.log('updateSrcEvent3');
-
-                linkSrc();
-              });
-            });
-          });
-        } else {
-          console.log("insert " + req.file.originalname );
-          const insertData = {
-            content: data.toString(),
-            link: req.file.originalname,
-            time: new Date().toLocaleString()
-          };
-          insertSrc(db, insertData, () => {
-            linkSrc();
-          });
-        }
-      });
-    });
-    // let buffer;
-    // if (Buffer.isBuffer(data)) {
-    //   buffer = data;
-    // } else {
-    //   buffer = new Buffer(data.toString(), 'binary');
-    // }
-//    res.send(data);
-      // fs.writeFile(file, data, function (err) {
-      //     if (err) {
-      //         console.log(err);
-      //     } else {
-            let response = {
-                  message: 'Success!',
-                  filename: req.file.originalname
-              };
-      //     }
-      //     console.log(response);
-           res.end(JSON.stringify(response));
-      // });
-  });
-});
 
 app.get('/', (req, res) => {  res.sendFile(__dirname + '/webgl/index.html'); });
 //app.get('/all.js', (req, res) => {  res.sendFile(__dirname + '/webgl/all.js'); });
