@@ -189,7 +189,7 @@ app.post('/file_upload', (req, res) => {
         //     ev.emit('updateSrc', {link: req.file.originalname, content: data});
         //   });
         // } else {
-          console.log("insert " + req.file.originalname );
+          console.log(data.toString() );
           let insertData = {
             content: data.toString(),
             link: req.file.originalname,
@@ -202,7 +202,7 @@ app.post('/file_upload', (req, res) => {
               console.log("routing");
               app.get('/' + insertData.link + '/' + fileCount, (req, res) => {
                 console.log(fileCount + "send");
-                res.send(insertData.content);
+                res.send(data.toString());
               });
               console.log(fileCount + "redirect");
               res.redirect('/' + insertData.link + '/' + fileCount);
