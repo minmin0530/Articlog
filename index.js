@@ -14,16 +14,22 @@ app.use(multer({dest: './tmp/'}).single('file'));
 const url = 'mongodb://localhost:27017'; 
 const dbName = 'myproject';
  
-const insertAccount = function(db, account, callback) {
+const insertAccount = (db, account, callback) => {
   const collection = db.collection('account');
   collection.insert(account, (err, result) => {
     callback(result);
   });
 }
 
-const insertArticle = function(db, article, callback) {
+const insertArticle = (db, article, callback) => {
   const collection = db.collection('article');
   collection.insert(article, (err, result) => {
+    callback(result);
+  });
+}
+const insertSrc = (db, src, callback) => {
+  const collection = db.collection('src');
+  collection.insert(src, (err, result) => {
     callback(result);
   });
 }
@@ -127,6 +133,19 @@ io.sockets.on('connection', (socket) => {
   });
 });
 
+function linkSrc() {
+  MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
+    const db = client.db(dbName);
+    const collection = db.collection('src');
+    collection.find({}).toArray( (err, docs) => {
+      for (const doc of docs) {
+        app.get('/' + doc.link, (req, res) => {
+          res.send(doc.content);
+        });
+      }
+    });
+  });
+}
 function linkArticle() {
   MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
     const db = client.db(dbName);
@@ -146,13 +165,28 @@ app.post('/file_upload', (req, res) => {
   var file = __dirname + "/" + req.file.originalname;
 
   fs.readFile(req.file.path, (err, data) => {
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
+      const db = client.db(dbName);
+      const insertData = {
+        content: data.toString(),
+        link: req.file.originalname,
+        time: new Date().toLocaleString()
+      };
+      insertSrc(db, insertData, () => {
+        linkSrc();
+//        socket.emit('published', publishData);
+        // findDocuments(db, function() {
+        //   client.close();
+        // });
+      });
+    });
     // let buffer;
     // if (Buffer.isBuffer(data)) {
     //   buffer = data;
     // } else {
     //   buffer = new Buffer(data.toString(), 'binary');
     // }
-    console.log( data.toString() );
+    console.log( req.file.originalname );
 //    res.send(data);
       // fs.writeFile(file, data, function (err) {
       //     if (err) {
@@ -170,7 +204,7 @@ app.post('/file_upload', (req, res) => {
 });
 
 app.get('/', (req, res) => {  res.sendFile(__dirname + '/webgl/index.html'); });
-app.get('/all.js', (req, res) => {  res.sendFile(__dirname + '/webgl/all.js'); });
+//app.get('/all.js', (req, res) => {  res.sendFile(__dirname + '/webgl/all.js'); });
 app.get('/src/shader/vertex.vs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/vertex.vs'); });
 app.get('/src/shader/fragment.fs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/fragment.fs'); });
 app.get('/index.css', (req, res) => {  res.sendFile(__dirname + '/css/index.css'); });
