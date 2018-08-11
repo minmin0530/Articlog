@@ -176,7 +176,7 @@ app.post('/file_upload', (req, res) => {
             time: new Date().toLocaleString()
       };
       insertSrc(db, insertData, () => {
-          fs.writeFile(__dirname + '/src/' + eq.file.originalname, data.toString());
+          fs.writeFile(__dirname + '/src/' + req.file.originalname, data.toString());
       });
       let response = {
                   message: 'Success!',
