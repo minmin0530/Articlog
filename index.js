@@ -145,6 +145,8 @@ function linkSrc() {
     });
   });
 }
+linkSrc();
+
 function linkArticle() {
   MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
     const db = client.db(dbName);
@@ -169,8 +171,10 @@ app.post('/file_upload', (req, res) => {
       const collection = db.collection('src');
       collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
         if (docs.length > 0) {
-          console.log("update " + req.file.originalname);
-          collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()});
+          console.log(docs.length + "update " + req.file.originalname);
+          collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
+            linkSrc();
+          });
         } else {
           console.log("insert " + req.file.originalname );
           const insertData = {
@@ -178,9 +182,10 @@ app.post('/file_upload', (req, res) => {
             link: req.file.originalname,
             time: new Date().toLocaleString()
           };
-          insertSrc(db, insertData);
+          insertSrc(db, insertData, () => {
+            linkSrc();
+          });
         }
-        linkSrc();
       });
     });
     // let buffer;
