@@ -200,12 +200,12 @@ app.post('/file_upload', (req, res) => {
             console.log(fileCount + "fileCount");
             app.get('/' + insertData.link, (req, res) => {
               console.log("routing");
-              app.get('/' + insertData.link + '/' + fileCount, (req, res) => {
+              app.get('/' + insertData.link + fileCount, (req, res) => {
                 console.log(fileCount + "send");
                 res.send(data.toString());
               });
               console.log(fileCount + "redirect");
-              res.redirect('/' + insertData.link + '/' + fileCount);
+              res.redirect('/' + insertData.link + fileCount);
 
             
             });
