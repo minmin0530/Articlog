@@ -29,9 +29,7 @@ const insertArticle = (db, article, callback) => {
 }
 const insertSrc = (db, src, callback) => {
   const collection = db.collection('src');
-  collection.insert(src, (err, result) => {
-    callback(result);
-  });
+  collection.insert(src);
 }
 
 /*
@@ -180,10 +178,9 @@ app.post('/file_upload', (req, res) => {
             link: req.file.originalname,
             time: new Date().toLocaleString()
           };
-          insertSrc(db, insertData, () => {
-            linkSrc();
-          });    
+          insertSrc(db, insertData);
         }
+        linkSrc();
       });
     });
     // let buffer;
