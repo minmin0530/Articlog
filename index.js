@@ -187,15 +187,6 @@ app.post('/file_upload', (req, res) => {
 
 
 app.get('/', (req, res) => {  res.sendFile(__dirname + '/webgl/index.html'); });
-//app.get('/all.js', (req, res) => {  res.sendFile(__dirname + '/webgl/all.js'); });
-app.get('/src/shader/vertex.vs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/vertex.vs'); });
-app.get('/src/shader/fragment.fs', (req, res) => { res.sendFile(__dirname + '/webgl/shader/fragment.fs'); });
-app.get('/index.css', (req, res) => {  res.sendFile(__dirname + '/css/index.css'); });
-app.get('/s_author.JPG', (req, res) => {  res.sendFile(__dirname + '/img/s_author.JPG'); });
-app.get('/s_author.png', (req, res) => {  res.sendFile(__dirname + '/img/s_author.png'); });
-app.get('/qiita.png', (req, res) => {  res.sendFile(__dirname + '/img/qiita.png'); });
-app.get('/github.png', (req, res) => {  res.sendFile(__dirname + '/img/github.png'); });
-app.get('/twitter.png', (req, res) => {  res.sendFile(__dirname + '/img/twitter.png'); });
 app.get('/login.js', (req, res) => {  res.sendFile(__dirname + '/home/login.js'); });
 app.get('/home', (req, res) => {  res.sendFile(__dirname + '/home/home.html'); });
 app.get('/home.js', (req, res) => {  res.sendFile(__dirname + '/home/home.js'); });
