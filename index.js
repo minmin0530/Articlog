@@ -97,7 +97,6 @@ const removeAllDocument = function(db, callback) {
     callback(result);
   });    
 }
-removeAllDocument();
 
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/articlog.com/privkey.pem'),
@@ -180,6 +179,7 @@ app.post('/file_upload', (req, res) => {
   fs.readFile(req.file.path, (err, data) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
+      removeAllDocument(db, () => {});
 
       const collection = db.collection('src');
       collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
