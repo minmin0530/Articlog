@@ -167,56 +167,23 @@ function linkArticle() {
 }
 linkArticle();
 
-// ev.on('updateSrc', (data) => {
-//   console.log('updateLinkSrc');
-//   app.get('/' + data.link + '/' + fileCount, (req, res) => {
-//     res.send(data.content.toString());
-//   });
-// })
-
 app.post('/file_upload', (req, res) => {
-  // var file = __dirname + "/" + req.file.originalname;
-
   fs.readFile(req.file.path, (err, data) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
-      // const collection = db.collection('src');
-      // collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
-        // if (docs.length > 0) {
-        //   console.log(docs.length + "update " + req.file.originalname);
-        //   collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
-        //     ev.emit('updateSrc', {link: req.file.originalname, content: data});
-        //   });
-        // } else {
-          let insertData = {
+      let insertData = {
             link: req.file.originalname,
             time: new Date().toLocaleString()
-          };
-          insertSrc(db, insertData, () => {
-            fs.writeFile(__dirname + '/src/' + eq.file.originalname, data.toString());
-          });
-//        }
-    //   });
-    // });
-    // let buffer;
-    // if (Buffer.isBuffer(data)) {
-    //   buffer = data;
-    // } else {
-    //   buffer = new Buffer(data.toString(), 'binary');
-    // }
-//    res.send(data);
-      // fs.writeFile(file, data, function (err) {
-      //     if (err) {
-      //         console.log(err);
-      //     } else {
-            let response = {
+      };
+      insertSrc(db, insertData, () => {
+          fs.writeFile(__dirname + '/src/' + eq.file.originalname, data.toString());
+      });
+      let response = {
                   message: 'Success!',
                   filename: req.file.originalname
-              };
-      //     }
-      //     console.log(response);
-           res.end(JSON.stringify(response));
-      // });
+      };
+      res.end(JSON.stringify(response));
+    });
   });
 });
 
