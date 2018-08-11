@@ -176,13 +176,9 @@ app.post('/file_upload', (req, res) => {
             time: new Date().toLocaleString()
       };
       insertSrc(db, insertData, () => {
-          fs.writeFile(__dirname + '/src/' + req.file.originalname, data.toString());
+          fs.writeFileSync(__dirname + '/src/' + req.file.originalname, data.toString());
       });
-      let response = {
-                  message: 'Success!',
-                  filename: req.file.originalname
-      };
-      res.end(JSON.stringify(response));
+      res.sendFile(__dirname + '/home/home.html');
     });
   });
 });
