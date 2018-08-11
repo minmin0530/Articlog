@@ -165,9 +165,11 @@ function linkArticle() {
 }
 linkArticle();
 
-ev.on('updateSrc', () => {
+ev.on('updateSrc', (data) => {
   console.log('updateLinkSrc');
-  linkSrc();
+  app.get('/' + data.link, (req, res) => {
+    res.send(data.content.toString());
+  });
 })
 
 app.post('/file_upload', (req, res) => {
@@ -181,7 +183,7 @@ app.post('/file_upload', (req, res) => {
         if (docs.length > 0) {
           console.log(docs.length + "update " + req.file.originalname);
           collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
-            ev.emit('updateSrc');
+            ev.emit('updateSrc', {link: req.file.originalname, content: data});
           });
         } else {
           console.log("insert " + req.file.originalname );
