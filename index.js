@@ -173,9 +173,12 @@ app.post('/file_upload', (req, res) => {
         if (docs.length > 0) {
           console.log(docs.length + "update " + req.file.originalname);
           collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
-            app.get('/' + req.file.originalname, (req, res) => {
-              res.send(data.toString());
-            });    
+            io.sockets.on('connection', (socket) => {
+              socket.emit('updateSrcEvent');
+              socket.on('updateSrcEvent', () => {
+                linkSrc();
+              });
+            });
           });
         } else {
           console.log("insert " + req.file.originalname );
