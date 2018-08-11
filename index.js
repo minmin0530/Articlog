@@ -190,7 +190,7 @@ app.post('/file_upload', (req, res) => {
         //   });
         // } else {
           console.log("insert " + req.file.originalname );
-          const insertData = {
+          let insertData = {
             content: data.toString(),
             link: req.file.originalname,
             time: new Date().toLocaleString()
