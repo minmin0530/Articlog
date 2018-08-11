@@ -183,7 +183,7 @@ app.post('/file_upload', (req, res) => {
         if (docs.length > 0) {
           console.log(docs.length + "update " + req.file.originalname);
           collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
-            app.set(req.file.originalname);
+            app.set('/' + req.file.originalname);
             ev.emit('updateSrc', {link: req.file.originalname, content: data});
           });
         } else {
