@@ -167,17 +167,23 @@ app.post('/file_upload', (req, res) => {
   fs.readFile(req.file.path, (err, data) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
-      const insertData = {
-        content: data.toString(),
-        link: req.file.originalname,
-        time: new Date().toLocaleString()
-      };
-      insertSrc(db, insertData, () => {
-        linkSrc();
-//        socket.emit('published', publishData);
-        // findDocuments(db, function() {
-        //   client.close();
-        // });
+
+      const collection = db.collection('src');
+      collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
+        if (docs.length > 0) {
+          console.log("update " + req.file.originalname);
+          collection.update({link: {$eq: req.file.originalname}}, {content: data.toString(), time: new Date().toLocaleString()});
+        } else {
+          console.log("insert " + req.file.originalname );
+          const insertData = {
+            content: data.toString(),
+            link: req.file.originalname,
+            time: new Date().toLocaleString()
+          };
+          insertSrc(db, insertData, () => {
+            linkSrc();
+          });    
+        }
       });
     });
     // let buffer;
@@ -186,7 +192,6 @@ app.post('/file_upload', (req, res) => {
     // } else {
     //   buffer = new Buffer(data.toString(), 'binary');
     // }
-    console.log( req.file.originalname );
 //    res.send(data);
       // fs.writeFile(file, data, function (err) {
       //     if (err) {
