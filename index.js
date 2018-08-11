@@ -144,7 +144,7 @@ function linkSrc() {
     collection.find({}).toArray( (err, docs) => {
       for (const doc of docs) {
         app.get('/' + doc.link, (req, res) => {
-          res.send(doc.content);
+          res.sendFile(__dirname + '/src/' + doc.link);
         });
       }
     });
@@ -174,46 +174,30 @@ linkArticle();
 //   });
 // })
 
-let fileCount = 0;
 app.post('/file_upload', (req, res) => {
-  var file = __dirname + "/" + req.file.originalname;
+  // var file = __dirname + "/" + req.file.originalname;
 
   fs.readFile(req.file.path, (err, data) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
-      const collection = db.collection('src');
-      collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
+      // const collection = db.collection('src');
+      // collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
         // if (docs.length > 0) {
         //   console.log(docs.length + "update " + req.file.originalname);
         //   collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
         //     ev.emit('updateSrc', {link: req.file.originalname, content: data});
         //   });
         // } else {
-          console.log(data.toString() );
           let insertData = {
-            content: data.toString(),
             link: req.file.originalname,
             time: new Date().toLocaleString()
           };
           insertSrc(db, insertData, () => {
-            ++fileCount;
-            console.log(fileCount + "fileCount");
-            app.get('/' + insertData.link, (req, res) => {
-              console.log("routing");
-              app.get('/' + insertData.link + fileCount, (req, res) => {
-                console.log(fileCount + "send");
-                res.send(data.toString());
-              });
-              console.log(fileCount + "redirect");
-              res.redirect('/' + insertData.link + fileCount);
-
-            
-            });
-
+            fs.writeFile(__dirname + '/src/' + eq.file.originalname, data.toString());
           });
 //        }
-      });
-    });
+    //   });
+    // });
     // let buffer;
     // if (Buffer.isBuffer(data)) {
     //   buffer = data;
