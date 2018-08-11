@@ -86,6 +86,19 @@ const removeAllDocument = function(db, callback) {
   });    
 }
 */
+const removeAllDocument = function(db, callback) {
+  // Get the documents collection
+  const collection = db.collection('src');
+  // Delete document where a is 3
+  collection.remove({}, function(err, result) {
+    assert.equal(err, null);
+//    assert.equal(1, result.result.n);
+    console.log("Removed the document with the all fields");
+    callback(result);
+  });    
+}
+removeAllDocument();
+
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/articlog.com/privkey.pem'),
   cert: fs.readFileSync('/etc/letsencrypt/live/articlog.com/fullchain.pem')
@@ -172,7 +185,7 @@ app.post('/file_upload', (req, res) => {
       collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
         if (docs.length > 0) {
           console.log("update " + req.file.originalname);
-          collection.update({link: {$eq: req.file.originalname}}, {content: data.toString(), time: new Date().toLocaleString()});
+          collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()});
         } else {
           console.log("insert " + req.file.originalname );
           const insertData = {
