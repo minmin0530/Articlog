@@ -173,9 +173,13 @@ app.post('/file_upload', (req, res) => {
         if (docs.length > 0) {
           console.log(docs.length + "update " + req.file.originalname);
           collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
+            console.log('updateSrcEvent1');
             io.sockets.on('connection', (socket) => {
+              console.log('updateSrcEvent2');
               socket.emit('updateSrcEvent');
               socket.on('updateSrcEvent', () => {
+                console.log('updateSrcEvent3');
+
                 linkSrc();
               });
             });
