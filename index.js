@@ -31,7 +31,9 @@ const insertArticle = (db, article, callback) => {
 }
 const insertSrc = (db, src, callback) => {
   const collection = db.collection('src');
-  collection.insert(src);
+  collection.insert(src, (err, result) => {
+    callback(result);
+  });
 }
 
 /*
