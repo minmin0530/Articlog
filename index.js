@@ -150,7 +150,7 @@ function linkSrc() {
     });
   });
 }
-//linkSrc();
+linkSrc();
 
 function linkArticle() {
   MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
@@ -177,6 +177,7 @@ app.post('/file_upload', (req, res) => {
       };
       insertSrc(db, insertData, () => {
           fs.writeFileSync(__dirname + '/src/' + req.file.originalname, data.toString());
+          linkSrc();
       });
       res.sendFile(__dirname + '/home/home.html');
     });
