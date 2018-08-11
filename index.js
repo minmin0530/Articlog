@@ -148,7 +148,7 @@ function linkSrc() {
     });
   });
 }
-linkSrc();
+//linkSrc();
 
 function linkArticle() {
   MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
