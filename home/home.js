@@ -160,10 +160,6 @@ class Home {
   upload() {
     this.article.innerHTML = '';
     this.article.appendChild(this.uploadDiv);
-    this.socket.on('updateSrcEvent', () => {
-      console.log('updateSrcEvent');
-      this.socket.emit('updateSrcEvent');
-    });
   }
   image_list() {
   }

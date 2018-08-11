@@ -165,13 +165,14 @@ function linkArticle() {
 }
 linkArticle();
 
-ev.on('updateSrc', (data) => {
-  console.log('updateLinkSrc');
-  app.get('/' + data.link, (req, res) => {
-    res.send(data.content.toString());
-  });
-})
+// ev.on('updateSrc', (data) => {
+//   console.log('updateLinkSrc');
+//   app.get('/' + data.link + '/' + fileCount, (req, res) => {
+//     res.send(data.content.toString());
+//   });
+// })
 
+let fileCount = 0;
 app.post('/file_upload', (req, res) => {
   var file = __dirname + "/" + req.file.originalname;
 
@@ -180,13 +181,12 @@ app.post('/file_upload', (req, res) => {
       const db = client.db(dbName);
       const collection = db.collection('src');
       collection.find({link: {$eq: req.file.originalname} }).toArray( (err, docs) => {
-        if (docs.length > 0) {
-          console.log(docs.length + "update " + req.file.originalname);
-          collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
-            app.update('/' + req.file.originalname);
-            ev.emit('updateSrc', {link: req.file.originalname, content: data});
-          });
-        } else {
+        // if (docs.length > 0) {
+        //   console.log(docs.length + "update " + req.file.originalname);
+        //   collection.update({link: {$eq: req.file.originalname}}, {link: req.file.originalname, content: data.toString(), time: new Date().toLocaleString()}, () => {
+        //     ev.emit('updateSrc', {link: req.file.originalname, content: data});
+        //   });
+        // } else {
           console.log("insert " + req.file.originalname );
           const insertData = {
             content: data.toString(),
@@ -194,9 +194,20 @@ app.post('/file_upload', (req, res) => {
             time: new Date().toLocaleString()
           };
           insertSrc(db, insertData, () => {
-            linkSrc();
+            ++fileCount;
+            console.log(fileCount + "fileCount");
+            app.get('/' + insertData.link, (req, res) => {
+              console.log("routing");
+              app.get('/' + insertData.link + '/' + fileCount, (req, res) => {
+                res.send(insertData.content);
+              });
+              res.redirect('/' + insertData.link + '/' + fileCount);
+
+            
+            });
+
           });
-        }
+//        }
       });
     });
     // let buffer;
