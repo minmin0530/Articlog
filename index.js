@@ -201,8 +201,10 @@ app.post('/file_upload', (req, res) => {
             app.get('/' + insertData.link, (req, res) => {
               console.log("routing");
               app.get('/' + insertData.link + '/' + fileCount, (req, res) => {
+                console.log(fileCount + "send");
                 res.send(insertData.content);
               });
+              console.log(fileCount + "redirect");
               res.redirect('/' + insertData.link + '/' + fileCount);
 
             
