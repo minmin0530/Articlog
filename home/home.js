@@ -158,7 +158,7 @@ class Home {
     this.socket.on('article_list', (list) => {
       this.article.innerHTML = '';
       for (const item of list) {
-        this.article.innerHTML += '<a href="' + item.link.substring(0, item.link.length - 5) + '">' + item.link.substring(0, item.link.length - 5) + '</a><br>';
+        this.article.innerHTML += '<a href="' + item.link.substring(0, item.link.length - 5) + '">' + item.link.substring(0, item.link.length - 5) + '</a><button onclick="home.edit(' + item.link + ');">編集</button><br>';
       }
     });
   }
@@ -175,5 +175,37 @@ class Home {
   plugin() {
   }
   change(file) {
+  }
+  edit(link) {
+    this.socket.emit('edit_article', link);
+    this.socket.on('edit_article', (data) => {
+      this.textarea.style.margin = "20px";
+      this.textarea.style.width = "512px";
+      this.textarea.style.height = "512px";
+      this.textarea.value = data;
+      
+      this.iframe.style.margin = "20px";
+      this.iframe.style.width = "512px";
+      this.iframe.style.height = "512px";
+  
+      this.iframe.srcdoc = data;
+  
+      this.div.style.display = "flex";
+      this.div.style.width = "1280px";
+  
+      this.article.innerHTML = '<h1>編集</h1>' + link;
+  
+      this.buttonDiv.appendChild(this.buttonPreview);
+      this.buttonDiv.appendChild(this.buttonSave);
+      this.buttonDiv.appendChild(this.buttonPublish);
+      this.buttonDiv.style.marginLeft = '400px';
+      this.inputButtonDiv.appendChild(this.buttonDiv);
+      this.article.appendChild(this.inputButtonDiv);
+  
+      this.div.appendChild(this.textarea);
+      this.div.appendChild(this.iframe);
+      this.article.appendChild(this.div);
+  
+    });
   }
 };

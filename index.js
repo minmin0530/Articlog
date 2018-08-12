@@ -143,7 +143,11 @@ io.sockets.on('connection', (socket) => {
             socket.emit('article_list', docs);
       });
     });
-
+  });
+  socket.on('edit_article', (linkData) => {
+    fs.readFile(__dirname + '/html/' + linkData, (err, data) => {
+      socket.emit('edit_article', data);
+    });
   });
 });
 
