@@ -175,11 +175,15 @@ app.post('/file_upload', (req, res) => {
             link: req.file.originalname,
             time: new Date().toLocaleString()
       };
-      insertSrc(db, insertData, () => {
+      if (req.file.originalname.indexOf(".html")) {
+        res.send("html");
+      } else {
+        insertSrc(db, insertData, () => {
           fs.writeFileSync(__dirname + '/src/' + req.file.originalname, data.toString());
           linkSrc();
-      });
-      res.sendFile(__dirname + '/home/home.html');
+        });
+        res.sendFile(__dirname + '/home/home.html');
+      }
     });
   });
 });
