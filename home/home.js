@@ -158,7 +158,7 @@ class Home {
     this.socket.on('article_list', (list) => {
       this.article.innerHTML = '';
       for (const item of list) {
-        this.article.innerHTML += '<a href="' + item.link.substring(0, item.link.length - 5) + '">' + item.link.substring(0, item.link.length - 5) + '</a><button onclick="home.edit( item.link );">編集</button><br>';
+        this.article.innerHTML += '<a href="' + item.link.substring(0, item.link.length - 5) + '">' + item.link.substring(0, item.link.length - 5) + '</a><button onclick="home.edit("' + item.link + '")">編集</button><br>';
       }
     });
   }
