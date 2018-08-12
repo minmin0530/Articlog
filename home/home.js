@@ -162,6 +162,7 @@ class Home {
         const btn = document.createElement('button');
         btn.addEventListener('click', this.edit, false);
         btn.eventParam = item.link;
+        btn.value = "編集";
         const a = document.createElement('a');
         a.href = item.link.substring(0, item.link.length - 5);
         a.value = item.link.substring(0, item.link.length - 5);
@@ -186,34 +187,34 @@ class Home {
   change(file) {
   }
   edit(event) {
-    this.socket.emit('edit_article', event.target.eventParam);
-    this.socket.on('edit_article', (data) => {
-      this.textarea.style.margin = "20px";
-      this.textarea.style.width = "512px";
-      this.textarea.style.height = "512px";
-      this.textarea.value = data;
+    home.socket.emit('edit_article', event.target.eventParam);
+    home.socket.on('edit_article', (data) => {
+      home.textarea.style.margin = "20px";
+      home.textarea.style.width = "512px";
+      home.textarea.style.height = "512px";
+      home.textarea.value = data;
       
-      this.iframe.style.margin = "20px";
-      this.iframe.style.width = "512px";
-      this.iframe.style.height = "512px";
+      home.iframe.style.margin = "20px";
+      home.iframe.style.width = "512px";
+      home.iframe.style.height = "512px";
   
-      this.iframe.srcdoc = data;
+      home.iframe.srcdoc = data;
   
-      this.div.style.display = "flex";
-      this.div.style.width = "1280px";
+      home.div.style.display = "flex";
+      home.div.style.width = "1280px";
   
-      this.article.innerHTML = '<h1>編集</h1>' + event.target.eventParam;
+      home.article.innerHTML = '<h1>編集</h1>' + event.target.eventParam;
   
-      this.buttonDiv.appendChild(this.buttonPreview);
-      this.buttonDiv.appendChild(this.buttonSave);
-      this.buttonDiv.appendChild(this.buttonPublish);
-      this.buttonDiv.style.marginLeft = '400px';
-      this.inputButtonDiv.appendChild(this.buttonDiv);
-      this.article.appendChild(this.inputButtonDiv);
+      home.buttonDiv.appendChild(home.buttonPreview);
+      home.buttonDiv.appendChild(home.buttonSave);
+      home.buttonDiv.appendChild(home.buttonPublish);
+      home.buttonDiv.style.marginLeft = '400px';
+      home.inputButtonDiv.appendChild(home.buttonDiv);
+      home.article.appendChild(home.inputButtonDiv);
   
-      this.div.appendChild(this.textarea);
-      this.div.appendChild(this.iframe);
-      this.article.appendChild(this.div);
+      home.div.appendChild(home.textarea);
+      home.div.appendChild(home.iframe);
+      home.article.appendChild(home.div);
   
     });
   }
