@@ -135,6 +135,16 @@ io.sockets.on('connection', (socket) => {
       });
     });
   });
+  socket.on('article_list', () => {
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
+      const db = client.db(dbName);
+      const collection = db.collection('article');
+      collection.find({}).toArray( (err, docs) => {
+            socket.emit('article_list', docs);
+      });
+    });
+
+  });
 });
 
 function linkSrc() {
