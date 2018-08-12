@@ -175,7 +175,8 @@ app.post('/file_upload', (req, res) => {
             link: req.file.originalname,
             time: new Date().toLocaleString()
       };
-      if (req.file.originalname.indexOf(".html")) {
+      console.log(req.file.originalname);
+      if (req.file.originalname.indexOf(".html") >= 1) {
         res.send("html");
       } else {
         insertSrc(db, insertData, () => {
