@@ -180,6 +180,7 @@ class Home {
   change(file) {
   }
   edit(num) {
+    console.log(num);
     this.socket.emit('edit_article', this.list[num].link);
     this.socket.on('edit_article', (data) => {
       this.textarea.style.margin = "20px";
