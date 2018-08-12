@@ -162,10 +162,10 @@ class Home {
         const btn = document.createElement('button');
         btn.addEventListener('click', this.edit, false);
         btn.eventParam = item.link;
-        btn.value = "編集";
+        btn.textContent = "編集";
         const a = document.createElement('a');
         a.href = item.link.substring(0, item.link.length - 5);
-        a.value = item.link.substring(0, item.link.length - 5);
+        a.textContent = item.link.substring(0, item.link.length - 5);
         this.article.appendChild(a);
         this.article.appendChild(btn);
         ++this.l;
@@ -192,13 +192,13 @@ class Home {
       home.textarea.style.margin = "20px";
       home.textarea.style.width = "512px";
       home.textarea.style.height = "512px";
-      home.textarea.value = data;
+      home.textarea.value = data.toString();
       
       home.iframe.style.margin = "20px";
       home.iframe.style.width = "512px";
       home.iframe.style.height = "512px";
   
-      home.iframe.srcdoc = data;
+      home.iframe.srcdoc = data.toString();
   
       home.div.style.display = "flex";
       home.div.style.width = "1280px";
