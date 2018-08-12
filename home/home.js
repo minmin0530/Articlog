@@ -154,6 +154,13 @@ class Home {
   init_write_js() {
   }
   init_article_list() {
+    this.socket.emit('article_list');
+    this.socket.on('article_list', (list) => {
+      this.article.innerHTML = '';
+      for (const item of list) {
+        this.article.innerHTML += '<a href="' + item.link + '">' + item.link + '</a><br>';
+      }
+    });
   }
   article_list(url_txt) {
   }
