@@ -221,7 +221,7 @@ class Home {
 };
 
 function buffer_to_string(buf) {
-  return String.fromCharCode.apply("", new Uint32Array(buf))
+  return String.fromCharCode.apply("", new Uint8Array(buf))
 }
 
 // ただし、文字列が長すぎる場合は RangeError: Maximum call stack size exceeded. が発生してしまう。
