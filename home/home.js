@@ -157,8 +157,11 @@ class Home {
     this.socket.emit('article_list');
     this.socket.on('article_list', (list) => {
       this.article.innerHTML = '';
+      this.list = list;
+      this.l = 0;
       for (const item of list) {
-        this.article.innerHTML += '<a href="' + item.link.substring(0, item.link.length - 5) + '">' + item.link.substring(0, item.link.length - 5) + '</a><button onclick="home.edit("' + item.link + '");">編集</button><br>';
+        this.article.innerHTML += '<a href="' + item.link.substring(0, item.link.length - 5) + '">' + item.link.substring(0, item.link.length - 5) + '</a><button onclick="home.edit(home.l);">編集</button><br>';
+        ++this.l;
       }
     });
   }
@@ -176,8 +179,8 @@ class Home {
   }
   change(file) {
   }
-  edit(link) {
-    this.socket.emit('edit_article', link);
+  edit(num) {
+    this.socket.emit('edit_article', this.list[num].link);
     this.socket.on('edit_article', (data) => {
       this.textarea.style.margin = "20px";
       this.textarea.style.width = "512px";
@@ -193,7 +196,7 @@ class Home {
       this.div.style.display = "flex";
       this.div.style.width = "1280px";
   
-      this.article.innerHTML = '<h1>編集</h1>' + link;
+      this.article.innerHTML = '<h1>編集</h1>' + this.list[num].link;
   
       this.buttonDiv.appendChild(this.buttonPreview);
       this.buttonDiv.appendChild(this.buttonSave);
