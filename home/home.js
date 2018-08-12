@@ -160,7 +160,7 @@ class Home {
 
       for (const item of list) {
         const btn = document.createElement('button');
-        btn.addEventListener('click', clickFunction, false);
+        btn.addEventListener('click', this.edit, false);
         btn.eventParam = item.link;
         const a = document.createElement('a');
         a.href = item.link.substring(0, item.link.length - 5);
