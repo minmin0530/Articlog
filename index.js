@@ -158,8 +158,8 @@ function linkArticle() {
     const collection = db.collection('article');
     collection.find({}).toArray( (err, docs) => {
       for (const doc of docs) {
-        app.get('/' + doc.link, (req, res) => {
-          res.send(doc.content);
+        app.get('/' + doc.link.substring(0, doc.link.length - 5), (req, res) => {
+          res.sendFile(__dirname + '/html/' + doc.link);
         });
       }
     });
@@ -177,21 +177,24 @@ app.post('/file_upload', (req, res) => {
       };
       console.log(req.file.originalname);
       if (req.file.originalname.indexOf(".html") >= 1) {
-        res.send("html");
+        insertArticle(db, insertData, () => {
+          fs.writeFileSync(__dirname + '/html/' + req.file.originalname, data.toString());
+          linkArticle();
+        });
       } else {
         insertSrc(db, insertData, () => {
           fs.writeFileSync(__dirname + '/src/' + req.file.originalname, data.toString());
           linkSrc();
         });
-        res.sendFile(__dirname + '/home/home.html');
       }
+      res.sendFile(__dirname + '/home/home.html');
     });
   });
 });
 
 
 
-app.get('/', (req, res) => {  res.sendFile(__dirname + '/webgl/index.html'); });
+app.get('/', (req, res) => {  res.sendFile(__dirname + '/html/webgl.html'); });
 app.get('/login.js', (req, res) => {  res.sendFile(__dirname + '/home/login.js'); });
 app.get('/home', (req, res) => {  res.sendFile(__dirname + '/home/home.html'); });
 app.get('/home.js', (req, res) => {  res.sendFile(__dirname + '/home/home.js'); });
