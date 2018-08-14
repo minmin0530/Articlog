@@ -181,10 +181,10 @@ class Home {
         btn.addEventListener('click', this.edit, false);
         btn.eventParam = item.link;
         btn.textContent = "編集";
-        const a = document.createElement('a');
-        a.href = item.link.substring(0, item.link.length - 5);
-        a.textContent = item.link.substring(0, item.link.length - 5);
-        this.article.appendChild(a);
+        const span = document.createElement('span');
+        span.href = item.link;
+        span.textContent = item.link;
+        this.article.appendChild(span);
         this.article.appendChild(btn);
         ++this.l;
       }
@@ -208,13 +208,21 @@ class Home {
       home.textarea.style.margin = "20px";
       home.textarea.style.width = "512px";
       home.textarea.style.height = "512px";
-      home.textarea.value = large_buffer_to_string(data);
+      if (data.indexOf('.html') > 0) {
+        home.textarea.value = large_buffer_to_string(data);
+      } else {
+        home.textarea.value = data;
+      }
       
       home.iframe.style.margin = "20px";
       home.iframe.style.width = "512px";
       home.iframe.style.height = "512px";
   
-      home.iframe.srcdoc = large_buffer_to_string(data);
+      if (data.indexOf('.html') > 0) {
+        home.iframe.srcdoc = large_buffer_to_string(data);
+      } else {
+        home.iframe.srcdoc = data;
+      }
   
       home.div.style.display = "flex";
       home.div.style.width = "1280px";
