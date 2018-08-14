@@ -204,8 +204,8 @@ class Home {
       home.div.style.width = "1280px";
   
       home.article.innerHTML = '<h1>編集</h1>' + event.target.eventParam;
-      home.inputLink.value = event.target.eventParam;
-      home.inputTitle.value = event.target.eventParam;
+      home.inputLink.value = event.target.eventParam.substring(0, event.target.eventParam.length - 5);
+      home.inputTitle.value = event.target.eventParam.substring(0, event.target.eventParam.length - 5);
 
       home.buttonDiv.appendChild(home.buttonPreview);
       home.buttonDiv.appendChild(home.buttonSave);
@@ -221,7 +221,7 @@ class Home {
       home.buttonPublish.addEventListener('click', () => {
         home.socket.emit('edit_publish', {
           time:    new Date().toLocaleString(),
-          content: hoem.textarea.value,
+          content: home.textarea.value,
           link:    home.inputLink.value,
           title:   home.inputTitle.value
         });
