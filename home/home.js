@@ -208,13 +208,13 @@ class Home {
       home.textarea.style.margin = "20px";
       home.textarea.style.width = "512px";
       home.textarea.style.height = "512px";
-      home.textarea.value = large_buffer_to_string(data);
+      home.textarea.value = data;//large_buffer_to_string(data);
       
       home.iframe.style.margin = "20px";
       home.iframe.style.width = "512px";
       home.iframe.style.height = "512px";
   
-      home.iframe.srcdoc = large_buffer_to_string(data);
+      home.iframe.srcdoc = data;//large_buffer_to_string(data);
   
       home.div.style.display = "flex";
       home.div.style.width = "1280px";
