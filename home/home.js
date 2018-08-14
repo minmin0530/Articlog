@@ -228,7 +228,7 @@ class Home {
       });
   
     });
-    this.socket.on('edit_published', (data) => {
+    home.socket.on('edit_published', (data) => {
 
       const linkCard = document.createElement('div');
       linkCard.style.position = "absolute";
