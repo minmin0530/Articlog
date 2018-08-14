@@ -126,7 +126,12 @@ io.sockets.on('connection', (socket) => {
   socket.on('publish', (publishData) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
-      insertArticle(db, publishData, () => {
+      let insertData = {
+        link: publishData.link,
+        time: new Date().toLocaleString()
+      };
+      insertArticle(db, insertData, () => {
+        fs.writeFileSync(__dirname + '/html/' + publishData.link, publishData.content);
         linkArticle();
         socket.emit('published', publishData);
         // findDocuments(db, function() {
