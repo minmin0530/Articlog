@@ -75,10 +75,10 @@ const removeDocument = function(db, callback) {
     callback(result);
   });    
 }
-*/
+
 const removeAllDocument = function(db, callback) {
   // Get the documents collection
-  const collection = db.collection('src');
+  const collection = db.collection('documents');
   // Delete document where a is 3
   collection.remove({}, function(err, result) {
     assert.equal(err, null);
@@ -87,7 +87,7 @@ const removeAllDocument = function(db, callback) {
     callback(result);
   });    
 }
-
+*/
 
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/articlog.com/privkey.pem'),
@@ -102,7 +102,6 @@ io.sockets.on('connection', (socket) => {
   socket.on('loginData', (loginData) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
       const db = client.db(dbName);
-      removeAllDocument(db, ()=>{});
       const collection = db.collection('account');
       collection.find({}).toArray( (err, docs) => {
         for (const doc of docs) {
