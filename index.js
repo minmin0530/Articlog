@@ -170,7 +170,7 @@ io.sockets.on('connection', (socket) => {
 
   socket.on('edit_article', (linkData) => {
     fs.readFile(__dirname + '/html/' + linkData, (err, data) => {
-      socket.emit('edit_article', data);
+      socket.emit('edit_article', unescape(encodeURIComponent(data)));
     });
   });
   socket.on('edit_publish', (publishData) => {
