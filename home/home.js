@@ -208,13 +208,13 @@ class Home {
       home.textarea.style.margin = "20px";
       home.textarea.style.width = "512px";
       home.textarea.style.height = "512px";
-      home.textarea.value = large_buffer_to_string(data, 16);
+      home.textarea.value = large_buffer_to_string(data).toString();
       
       home.iframe.style.margin = "20px";
       home.iframe.style.width = "512px";
       home.iframe.style.height = "512px";
   
-      home.iframe.srcdoc = large_buffer_to_string(data, 16);
+      home.iframe.srcdoc = large_buffer_to_string(data).toString();
   
       home.div.style.display = "flex";
       home.div.style.width = "1280px";
@@ -266,13 +266,13 @@ class Home {
       home.textarea.style.margin = "20px";
       home.textarea.style.width = "512px";
       home.textarea.style.height = "512px";
-      home.textarea.value = large_buffer_to_string(data, 8);
+      home.textarea.value = large_buffer_to_string(data);
       
       home.iframe.style.margin = "20px";
       home.iframe.style.width = "512px";
       home.iframe.style.height = "512px";
   
-      home.iframe.srcdoc = large_buffer_to_string(data, 8);
+      home.iframe.srcdoc = large_buffer_to_string(data);
   
       home.div.style.display = "flex";
       home.div.style.width = "1280px";
@@ -318,22 +318,18 @@ class Home {
   }
 };
 
-function buffer_to_string(buf, num) {
-  if (num == 8) {
-    return String.fromCharCode.apply("", new Uint8Array(buf))
-  } else if (num == 16) {
-    return String.fromCharCode.apply("", new Uint16Array(buf))
-  }
+function buffer_to_string(buf) {
+  return String.fromCharCode.apply("", new Uint8Array(buf))
 }
 
 // ただし、文字列が長すぎる場合は RangeError: Maximum call stack size exceeded. が発生してしまう。
 // 以下は1024バイト単位に分割して処理する場合
 
-function large_buffer_to_string(buf, num) {
+function large_buffer_to_string(buf) {
   var tmp = [];
   var len = 1024;
   for (var p = 0; p < buf.byteLength; p += len) {
-    tmp.push(buffer_to_string(buf.slice(p, p + len), num));
+    tmp.push(buffer_to_string(buf.slice(p, p + len)));
   }
   return tmp.join("");
 }
