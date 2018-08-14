@@ -158,6 +158,15 @@ io.sockets.on('connection', (socket) => {
       });
     });
   });
+  socket.on('edit_src', (linkData) => {
+    fs.readFile(__dirname + '/src/' + linkData, (err, data) => {
+      socket.emit('edit_src', data);
+    });
+  });
+  socket.on('edit_src_publish', (publishData) => {
+    fs.writeFileSync(__dirname + '/src/' + publishData.link, publishData.content);
+    socket.emit('edit_src_published', publishData);
+  });
 
   socket.on('edit_article', (linkData) => {
     fs.readFile(__dirname + '/html/' + linkData, (err, data) => {

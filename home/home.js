@@ -178,7 +178,7 @@ class Home {
       this.article.innerHTML = '';
       for (const item of list) {
         const btn = document.createElement('button');
-        btn.addEventListener('click', this.edit, false);
+        btn.addEventListener('click', this.edit_src, false);
         btn.eventParam = item.link;
         btn.textContent = "編集";
         const span = document.createElement('span');
@@ -208,21 +208,13 @@ class Home {
       home.textarea.style.margin = "20px";
       home.textarea.style.width = "512px";
       home.textarea.style.height = "512px";
-      if (data.indexOf('.html') > 0) {
-        home.textarea.value = large_buffer_to_string(data);
-      } else {
-        home.textarea.value = data;
-      }
+      home.textarea.value = large_buffer_to_string(data);
       
       home.iframe.style.margin = "20px";
       home.iframe.style.width = "512px";
       home.iframe.style.height = "512px";
   
-      if (data.indexOf('.html') > 0) {
-        home.iframe.srcdoc = large_buffer_to_string(data);
-      } else {
-        home.iframe.srcdoc = data;
-      }
+      home.iframe.srcdoc = large_buffer_to_string(data);
   
       home.div.style.display = "flex";
       home.div.style.width = "1280px";
@@ -267,6 +259,62 @@ class Home {
 
       document.body.appendChild(linkCard);
     });
+  }
+  edit_src (event) {
+    home.socket.emit('edit_src', event.target.eventParam);
+    home.socket.on('edit_src', (data) => {
+      home.textarea.style.margin = "20px";
+      home.textarea.style.width = "512px";
+      home.textarea.style.height = "512px";
+      home.textarea.value = data;
+      
+      home.iframe.style.margin = "20px";
+      home.iframe.style.width = "512px";
+      home.iframe.style.height = "512px";
+  
+      home.iframe.srcdoc = data;
+  
+      home.div.style.display = "flex";
+      home.div.style.width = "1280px";
+  
+      home.article.innerHTML = '<h1>編集</h1>' + event.target.eventParam;
+      home.inputLink.value = event.target.eventParam;
+
+      home.buttonDiv.appendChild(home.buttonPreview);
+      home.buttonDiv.appendChild(home.buttonSave);
+      home.buttonDiv.appendChild(home.buttonPublish);
+      home.buttonDiv.style.marginLeft = '400px';
+      home.inputButtonDiv.appendChild(home.buttonDiv);
+      home.article.appendChild(home.inputButtonDiv);
+  
+      home.div.appendChild(home.textarea);
+      home.div.appendChild(home.iframe);
+      home.article.appendChild(home.div);
+  
+      home.buttonPublish.addEventListener('click', () => {
+        home.socket.emit('edit_src_publish', {
+          time:    new Date().toLocaleString(),
+          content: home.textarea.value,
+          link:    home.inputLink.value,
+        });
+      });
+  
+    });
+    // home.socket.on('edit_src_published', (data) => {
+
+    //   const linkCard = document.createElement('div');
+    //   linkCard.style.position = "absolute";
+    //   linkCard.style.top = "400px";
+    //   linkCard.style.left = "600px";
+    //   linkCard.style.width = "400px";
+    //   linkCard.style.height = "200px";
+    //   linkCard.style.background = "#fff";
+    //   linkCard.style.border = "solid #008 5px";
+    //   linkCard.style.padding = "50px";
+    //   linkCard.innerHTML = "編集できました。<br>";
+
+    //   document.body.appendChild(linkCard);
+    // });
   }
 };
 
