@@ -154,6 +154,11 @@ io.sockets.on('connection', (socket) => {
       socket.emit('edit_article', data);
     });
   });
+  socket.on('edit_publish', (publishData) => {
+    fs.writeFileSync(__dirname + '/html/' + publishData.link + '.html', publishData.content);
+    linkArticle();
+    socket.emit('edit_published', publishData);
+  });
 });
 
 function linkSrc() {

@@ -204,7 +204,9 @@ class Home {
       home.div.style.width = "1280px";
   
       home.article.innerHTML = '<h1>編集</h1>' + event.target.eventParam;
-  
+      home.inputLink.value = event.target.eventParam;
+      home.inputTitle.value = event.target.eventParam;
+
       home.buttonDiv.appendChild(home.buttonPreview);
       home.buttonDiv.appendChild(home.buttonSave);
       home.buttonDiv.appendChild(home.buttonPublish);
@@ -216,6 +218,30 @@ class Home {
       home.div.appendChild(home.iframe);
       home.article.appendChild(home.div);
   
+      home.buttonPublish.addEventListener('click', () => {
+        home.socket.emit('edit_publish', {
+          time:    new Date().toLocaleString(),
+          content: hoem.textarea.value,
+          link:    home.inputLink.value,
+          title:   home.inputTitle.value
+        });
+      });
+  
+    });
+    this.socket.on('edit_published', (data) => {
+
+      const linkCard = document.createElement('div');
+      linkCard.style.position = "absolute";
+      linkCard.style.top = "400px";
+      linkCard.style.left = "600px";
+      linkCard.style.width = "400px";
+      linkCard.style.height = "200px";
+      linkCard.style.background = "#fff";
+      linkCard.style.border = "solid #008 5px";
+      linkCard.style.padding = "50px";
+      linkCard.innerHTML = "公開できました。<br><a href='https://articlog.com/" + data.link + "'>" + data.title + "</a>";
+
+      document.body.appendChild(linkCard);
     });
   }
 };
