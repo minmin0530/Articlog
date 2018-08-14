@@ -172,7 +172,23 @@ class Home {
       }
     });
   }
-  article_list(url_txt) {
+  init_src_list() {
+    this.socket.emit('src_list');
+    this.socket.on('src_list', (list) => {
+      this.article.innerHTML = '';
+      for (const item of list) {
+        const btn = document.createElement('button');
+        btn.addEventListener('click', this.edit, false);
+        btn.eventParam = item.link;
+        btn.textContent = "編集";
+        const a = document.createElement('a');
+        a.href = item.link.substring(0, item.link.length - 5);
+        a.textContent = item.link.substring(0, item.link.length - 5);
+        this.article.appendChild(a);
+        this.article.appendChild(btn);
+        ++this.l;
+      }
+    });
   }
   upload() {
     this.article.innerHTML = '';
