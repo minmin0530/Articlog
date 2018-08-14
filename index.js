@@ -131,7 +131,7 @@ io.sockets.on('connection', (socket) => {
         time: new Date().toLocaleString()
       };
       insertArticle(db, insertData, () => {
-        fs.writeFileSync(__dirname + '/html/' + publishData.link, publishData.content);
+        fs.writeFileSync(__dirname + '/html/' + insertData.link, publishData.content);
         linkArticle();
         socket.emit('published', publishData);
         // findDocuments(db, function() {
