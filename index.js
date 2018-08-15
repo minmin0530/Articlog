@@ -281,7 +281,7 @@ app.get('/home', (req, res) => {  res.sendFile(__dirname + '/home/home.html'); }
 app.get('/home.js', (req, res) => {  res.sendFile(__dirname + '/home/home.js'); });
 app.get('/home.css', (req, res) => {  res.sendFile(__dirname + '/home/home.css'); });
 
-app.post('/plugin', function(req, res) {
+app.get('/plugin', function(req, res) {
   let pluginsDir = path.join(__dirname, 'plugins');
   let pluginObjects = [];
   console.log(pluginsDir);
