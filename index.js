@@ -290,13 +290,17 @@ app.get('/plugin', function(req, res) {
     pluginObjects.push( path.join(pluginsDir, file));
   });
 
-  let result = '';
-  for (var v = 0; v < pluginObjects.length; ++v) {
-    var obj = loadObject(fs, pluginObjects[v]);
-    var pluginTest = new obj();
-    result += pluginTest.print(MongoClient, url, dbName, fs, __dirname, 'hoge') + '<br>';
-  }
-  res.send(result);
+  async function awaitPlugin() {
+    let result = '';
+    for (var v = 0; v < pluginObjects.length; ++v) {
+      var obj = loadObject(fs, pluginObjects[v]);
+      var pluginTest = new obj();
+      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname, 'hoge') + '<br>';
+    }
+    res.send(result);
+  };
+  awaitPlugin();
+
 });
 
 function loadObject (fs, file) {

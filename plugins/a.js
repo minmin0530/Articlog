@@ -1,7 +1,7 @@
 class PluginTest1 {
   constructor() {
   }
-  print(MongoClient, url, dbName, fs, __dirname, hoge) {
+  async print(MongoClient, url, dbName, fs, __dirname, hoge) {
 
     async function returnHTML() {
       let result = '0';
@@ -42,7 +42,7 @@ class PluginTest1 {
   
       return 'plugin-a:' + result;
       }
-    return returnHTML();
+    return await returnHTML();
   }
 };
 
