@@ -280,6 +280,33 @@ app.get('/login.js', (req, res) => {  res.sendFile(__dirname + '/home/login.js')
 app.get('/home', (req, res) => {  res.sendFile(__dirname + '/home/home.html'); });
 app.get('/home.js', (req, res) => {  res.sendFile(__dirname + '/home/home.js'); });
 app.get('/home.css', (req, res) => {  res.sendFile(__dirname + '/home/home.css'); });
+
+app.post('/plugin', function(req, res) {
+  let pluginsDir = path.join(__dirname, 'plugins');
+  let pluginObjects = [];
+  fs.readdirSync(pluginsDir).forEach(file => {
+    if (path.extname(file) !== '.js') {
+      return;
+    }
+    pluginObjects.push( path.join(pluginsDir, file));
+  });
+
+  let result = '';
+  for (var v = 0; v < pluginObjects.length; ++v) {
+    var obj = loadObject(fs, pluginObjects[v]);
+    var pluginTest = new obj();
+    result += pluginTest.print('hoge') + '<br>';
+  }
+  res.send(result);
+});
+
+function loadObject (fs, file) {
+  var sandbox = {};
+  var script = vm.createScript(fs.readFileSync(file, 'utf8'), file);
+  script.runInNewContext(sandbox);
+  return sandbox.exports;
+};
+
 server.listen(443);
 http.createServer(app).listen(80);
 
