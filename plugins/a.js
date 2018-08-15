@@ -14,7 +14,8 @@ class PluginTest1 {
           // });
 
           fs.readFile(__dirname + '/html/' + doc.link, (err, data) => {
-            result += data;
+            //result += data;
+            return data;
           });
       
 
