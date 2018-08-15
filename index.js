@@ -283,13 +283,11 @@ app.get('/home.css', (req, res) => {  res.sendFile(__dirname + '/home/home.css')
 app.get('/plugin', function(req, res) {
   let pluginsDir = path.join(__dirname, 'plugins');
   let pluginObjects = [];
-  console.log(pluginsDir);
   fs.readdirSync(pluginsDir).forEach(file => {
     if (path.extname(file) !== '.js') {
       return;
     }
     pluginObjects.push( path.join(pluginsDir, file));
-    console.log(file);
   });
 
   let result = '';
@@ -297,9 +295,7 @@ app.get('/plugin', function(req, res) {
     var obj = loadObject(fs, pluginObjects[v]);
     var pluginTest = new obj();
     result += pluginTest.print('hoge') + '<br>';
-    console.log(v);
   }
-  console.log(result);
   res.send(result);
 });
 
