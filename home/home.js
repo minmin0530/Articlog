@@ -20,6 +20,7 @@ class Home {
     this.buttonSave    = document.createElement('button');
     this.buttonPublish = document.createElement('button');
 
+    //file upload
     this.uploadDiv = document.createElement('div');
     this.form = document.createElement('form');
     this.inputFile = document.createElement('input');
@@ -36,6 +37,25 @@ class Home {
     this.form.appendChild(this.inputFile);
     this.form.appendChild(this.inputSubmit);
     this.uploadDiv.appendChild(this.form);
+
+
+    //plugin upload
+    this.plugin_uploadDiv = document.createElement('div');
+    this.plugin_form = document.createElement('form');
+    this.plugin_inputFile = document.createElement('input');
+    this.plugin_inputSubmit = document.createElement('input');
+
+    this.plugin_inputFile.type = 'file';
+    this.plugin_inputFile.name = 'file';
+    this.plugin_inputSubmit.type = 'submit';
+    this.plugin_inputSubmit.value = 'Upload File';
+    this.plugin_form.action = 'plugin_upload';
+    this.plugin_form.method = 'POST';
+    this.plugin_form.enctype = 'multipart/form-data';
+
+    this.plugin_form.appendChild(this.plugin_inputFile);
+    this.plugin_form.appendChild(this.plugin_inputSubmit);
+    this.plugin_uploadDiv.appendChild(this.plugin_form);
 
     this.inputButtonDiv.style.display = 'flex';
     this.inputButtonDiv.style.width = '100%';
@@ -199,6 +219,8 @@ class Home {
   setting() {
   }
   plugin() {
+    this.article.innerHTML = '';
+    this.article.appendChild(this.plugin_uploadDiv);
   }
   change(file) {
   }

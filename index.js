@@ -35,6 +35,12 @@ const insertSrc = (db, src, callback) => {
     callback(result);
   });
 }
+const insertPlugin = (db, article, callback) => {
+  const collection = db.collection('plugin');
+  collection.insert(article, (err, result) => {
+    callback(result);
+  });
+}
 
 /*
 const insertDocuments = function(db, callback) {
@@ -209,6 +215,21 @@ function linkArticle() {
 }
 linkArticle();
 
+function linkPlugin() {
+  MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
+    const db = client.db(dbName);
+    const collection = db.collection('plugin');
+    collection.find({}).toArray( (err, docs) => {
+      for (const doc of docs) {
+        app.get('/' + doc.link, (req, res) => {
+          res.sendFile(__dirname + '/plugins/' + doc.link);
+        });
+      }
+    });
+  });
+}
+linkPlugin();
+
 app.post('/file_upload', (req, res) => {
   fs.readFile(req.file.path, (err, data) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
@@ -229,6 +250,24 @@ app.post('/file_upload', (req, res) => {
           linkSrc();
         });
       }
+      res.sendFile(__dirname + '/home/home.html');
+    });
+  });
+});
+
+app.post('/plugin_upload', (req, res) => {
+  fs.readFile(req.file.path, (err, data) => {
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
+      const db = client.db(dbName);
+      let insertData = {
+            link: req.file.originalname,
+            time: new Date().toLocaleString()
+      };
+      console.log(req.file.originalname);
+      insertPlugin(db, insertData, () => {
+        fs.writeFileSync(__dirname + '/plugins/' + req.file.originalname, data.toString());
+        linkPlugin();
+      });
       res.sendFile(__dirname + '/home/home.html');
     });
   });
