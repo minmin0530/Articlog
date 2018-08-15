@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const multer = require("multer");
 const MongoClient = require('mongodb').MongoClient;
 const path = require('path');
+const vm = require('vm');
 
 app.use(bodyParser.urlencoded( { extended: false }));
 app.use(multer({dest: './tmp/'}).single('file'));
