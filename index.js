@@ -294,7 +294,7 @@ app.get('/plugin', function(req, res) {
   for (var v = 0; v < pluginObjects.length; ++v) {
     var obj = loadObject(fs, pluginObjects[v]);
     var pluginTest = new obj();
-    result += pluginTest.print('hoge') + '<br>';
+    result += pluginTest.print(MongoClient, 'hoge') + '<br>';
   }
   res.send(result);
 });

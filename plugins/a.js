@@ -1,7 +1,7 @@
 class PluginTest1 {
   constructor() {
   }
-  print(data) {
+  print(MongoClient, data) {
 
     let result = '';
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
