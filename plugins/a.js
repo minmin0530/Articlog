@@ -3,18 +3,18 @@ class PluginTest1 {
   }
   print(MongoClient, url, dbName, fs, __dirname, hoge) {
 
-    console.log('print');
-    let result = '';
+    let result = '0';
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
       const db = client.db(dbName);
       const collection = db.collection('article');
-      console.log('mongodb');
+      result += '1';
       collection.find({}).toArray( (err, docs) => {
-        console.log(docs.length);
+        result += '2';
         for (const doc of docs) {
           // app.get('/' + doc.link.substring(0, doc.link.length - 5), (req, res) => {
           //   res.sendFile(__dirname + '/html/' + doc.link);
           // });
+          result += '3';
 
           return doc.link;
 
@@ -26,14 +26,18 @@ class PluginTest1 {
 
 
         }
+        result += '4';
+
       });
+      result += '5';
+
     });
   
 
 
 
 
-//    return 'plugin-a:' + result;
+    return 'plugin-a:' + result;
   }
 };
 
