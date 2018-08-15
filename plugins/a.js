@@ -16,10 +16,12 @@ class PluginTest1 {
           //   res.sendFile(__dirname + '/html/' + doc.link);
           // });
 
-          fs.readFile(__dirname + '/html/' + doc.link, (err, data) => {
-            //result += data;
-            return data;
-          });
+          return doc.link;
+
+          // fs.readFile(__dirname + '/html/' + doc.link, (err, data) => {
+          //   //result += data;
+          //   return data;
+          // });
       
 
 
