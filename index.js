@@ -6,9 +6,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const multer = require("multer");
 const MongoClient = require('mongodb').MongoClient;
-const assert = require('assert');
-const EventEmitter = require('events').EventEmitter;
-const ev = new EventEmitter();
+const path = require('path');
 
 app.use(bodyParser.urlencoded( { extended: false }));
 app.use(multer({dest: './tmp/'}).single('file'));
