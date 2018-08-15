@@ -288,7 +288,7 @@ app.get('/plugin', function(req, res) {
       return;
     }
     pluginObjects.push( path.join(pluginsDir, file));
-    console(file);
+    console.log(file);
   });
 
   let result = '';
