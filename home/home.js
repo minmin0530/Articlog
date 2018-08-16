@@ -215,6 +215,19 @@ class Home {
     this.article.appendChild(this.uploadDiv);
   }
   image_list() {
+    this.socket.emit('img_list');
+    this.socket.on('img_list', (list) => {
+      this.article.innerHTML = '';
+      for (const item of list) {
+        const img = document.createElement('img');
+        img.src = item.link;
+        const span = document.createElement('span');
+        span.textContent = item.link;
+        this.article.appendChild(span);
+        this.article.appendChild(img);
+      }
+    });
+
   }
   setting() {
   }

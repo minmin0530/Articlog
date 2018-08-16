@@ -34,6 +34,12 @@ const insertSrc = (db, src, callback) => {
     callback(result);
   });
 }
+const insertImg = (db, src, callback) => {
+  const collection = db.collection('img');
+  collection.insert(src, (err, result) => {
+    callback(result);
+  });
+}
 const insertPlugin = (db, article, callback) => {
   const collection = db.collection('plugin');
   collection.insert(article, (err, result) => {
@@ -163,6 +169,15 @@ io.sockets.on('connection', (socket) => {
       });
     });
   });
+  socket.on('img_list', () => {
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
+      const db = client.db(dbName);
+      const collection = db.collection('img');
+      collection.find({}).toArray( (err, docs) => {
+            socket.emit('img_list', docs);
+      });
+    });
+  });
   socket.on('edit_src', (linkData) => {
     fs.readFile(__dirname + '/src/' + linkData, (err, data) => {
       socket.emit('edit_src', data);
@@ -183,6 +198,20 @@ io.sockets.on('connection', (socket) => {
     socket.emit('edit_published', publishData);
   });
 });
+function linkImg() {
+  MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
+    const db = client.db(dbName);
+    const collection = db.collection('img');
+    collection.find({}).toArray( (err, docs) => {
+      for (const doc of docs) {
+        app.get('/' + doc.link, (req, res) => {
+          res.sendFile(__dirname + '/img/' + doc.link);
+        });
+      }
+    });
+  });
+}
+linkImg();
 
 function linkSrc() {
   MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
@@ -242,6 +271,15 @@ app.post('/file_upload', (req, res) => {
         insertArticle(db, insertData, () => {
           fs.writeFileSync(__dirname + '/html/' + req.file.originalname, data.toString());
           linkArticle();
+        });
+      } else if (
+        req.file.originalname.indexOf(".png") >= 1 ||
+        req.file.originalname.indexOf(".jpg") >= 1 ||
+        req.file.originalname.indexOf(".PNG") >= 1 ||
+        req.file.originalname.indexOf(".JPG") >= 1) {
+        insertImg(db, insertData, () => {
+          fs.writeFileSync(__dirname + '/img/' + req.file.originalname, data);
+          linkImg();
         });
       } else {
         insertSrc(db, insertData, () => {

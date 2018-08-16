@@ -16,7 +16,7 @@ class PluginTest1 {
       let html = '';
       let begin = 0;
       let end = 0;
-      const cursor = db.collection('article').find({})
+      const cursor = db.collection('article').find({}).sort({'_id': -1});
       while(await cursor.hasNext()) {
         let doc   = await cursor.next();
         html      = await fs.readFileSync(__dirname + '/html/' + doc.link);
@@ -32,9 +32,8 @@ class PluginTest1 {
         d.getMinutes(); 
         let h1begin = html.toString().indexOf('<h1>');
         let h1end = html.toString().indexOf('</h1>') + 5;
-        result += html.toString().substring(h1begin, h1end);
+        result += '<a href="' + doc.link.substring(0, doc.link.length - 5) + '">' + html.toString().substring(h1begin, h1end) + '</a>';
         result += html.toString().substring(begin, end);
-
       }
       begin = html.toString().indexOf('<article>') + 9;
       end = html.toString().indexOf('</article>');
