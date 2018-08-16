@@ -133,7 +133,7 @@ io.sockets.on('connection', (socket) => {
       const db = client.db(dbName);
       let insertData = {
         link: publishData.link + '.html',
-        time: new Date().toLocaleDateString() + new Date().toLocaleTimeString()
+        time: new Date()
       };
       insertArticle(db, insertData, () => {
         fs.writeFileSync(__dirname + '/html/' + insertData.link, publishData.content);
@@ -235,7 +235,7 @@ app.post('/file_upload', (req, res) => {
       const db = client.db(dbName);
       let insertData = {
             link: req.file.originalname,
-            time: new Date().toLocaleDateString() + new Date().toLocaleTimeString()
+            time: new Date()
       };
       console.log(req.file.originalname);
       if (req.file.originalname.indexOf(".html") >= 1) {
@@ -260,7 +260,7 @@ app.post('/plugin_upload', (req, res) => {
       const db = client.db(dbName);
       let insertData = {
             link: req.file.originalname,
-            time: new Date().toLocaleDateString() + new Date().toLocaleTimeString()
+            time: new Date()
       };
       console.log(req.file.originalname);
       insertPlugin(db, insertData, () => {

@@ -130,7 +130,7 @@ class Home {
 
     this.buttonPublish.addEventListener('click', () => {
       this.socket.emit('publish', {
-        time:    new Date().toLocaleDateString() + new Date().toLocaleTimeString(),
+        time:    new Date(),
         content: this.textarea.value,
         link:    this.inputLink.value,
         title:   this.inputTitle.value
@@ -258,7 +258,7 @@ class Home {
   
       home.buttonPublish.addEventListener('click', () => {
         home.socket.emit('edit_publish', {
-          time:    new Date().toLocaleDateString() + new Date().toLocaleTimeString(),
+          time:    new Date(),
           content: home.textarea.value,
           link:    home.inputLink.value,
           title:   home.inputTitle.value
@@ -315,7 +315,7 @@ class Home {
   
       home.buttonPublish.addEventListener('click', () => {
         home.socket.emit('edit_src_publish', {
-          time:    new Date().toLocaleDateString() + new Date().toLocaleTimeString(),
+          time:    new Date(),
           content: home.textarea.value,
           link:    home.inputLink.value,
         });

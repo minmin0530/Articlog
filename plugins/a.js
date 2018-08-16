@@ -9,8 +9,8 @@ class PluginTest1 {
       const db = await client.db(dbName);
         
       // //検索(`toArray()`版)
-      // const docs = await db.collection('article').find({}).toArray()
-      // console.log(docs)
+      //  const docs = await db.collection('article').remove({});
+      //  console.log(docs)
     
       //検索(カーソル版) 
       let html = '';
@@ -22,10 +22,16 @@ class PluginTest1 {
         html      = await fs.readFileSync(__dirname + '/html/' + doc.link);
         begin     = html.toString().indexOf('<section>');
         end       = html.toString().indexOf('</section>') + 10;
-        result   += doc.time;
+        const d = doc.time;
+        result = doc.time;/*
+        d.getFullYear() + '/' +
+        (d.getMonth() + 1) + '/' +
+        d.getDate() + ' ' +
+        d.getHours() + ':' +
+        d.getMinutes();*/
         result   += html.toString().substring(begin, end);
       }
-      result += new Date().toLocaleDateString() + new Date().toLocaleTimeString();
+
       end = html.toString().indexOf('</article>');
       const begin_html = html.toString().substring(0, begin);
       const end_html = html.toString().substring(end, html.length);
