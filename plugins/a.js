@@ -25,7 +25,7 @@ class PluginTest1 {
         result   += doc.time;
         result   += html.toString().substring(begin, end);
       }
-      result += new Date().toLocaleString("ja");
+      result += new Date().toLocaleDateString() + new Date().toLocaleTimeString();
       end = html.toString().indexOf('</article>');
       const begin_html = html.toString().substring(0, begin);
       const end_html = html.toString().substring(end, html.length);
