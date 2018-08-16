@@ -274,13 +274,13 @@ app.post('/plugin_upload', (req, res) => {
 
 
 
-app.get('/', (req, res) => {  res.sendFile(__dirname + '/html/webgl.html'); });
+//app.get('/', (req, res) => {  res.sendFile(__dirname + '/html/webgl.html'); });
 app.get('/login.js', (req, res) => {  res.sendFile(__dirname + '/home/login.js'); });
 app.get('/home', (req, res) => {  res.sendFile(__dirname + '/home/home.html'); });
 app.get('/home.js', (req, res) => {  res.sendFile(__dirname + '/home/home.js'); });
 app.get('/home.css', (req, res) => {  res.sendFile(__dirname + '/home/home.css'); });
 
-app.get('/plugin', function(req, res) {
+app.get('/', function(req, res) {
   let pluginsDir = path.join(__dirname, 'plugins');
   let pluginObjects = [];
   fs.readdirSync(pluginsDir).forEach(file => {
@@ -295,7 +295,7 @@ app.get('/plugin', function(req, res) {
     for (var v = 0; v < pluginObjects.length; ++v) {
       var obj = loadObject(fs, pluginObjects[v]);
       var pluginTest = new obj();
-      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname, 'hoge') + '<br>';
+      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname) + '<br>';
     }
     res.send(result);
   };
