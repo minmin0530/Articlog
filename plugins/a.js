@@ -23,16 +23,17 @@ class PluginTest1 {
         begin     = html.toString().indexOf('<section>') + 9;
         end       = html.toString().indexOf('</section>') + 10;
 
+        let h1begin = html.toString().indexOf('<h1>');
+        let h1end = html.toString().indexOf('</h1>') + 5;
+        result += '<section><a href="' + doc.link.substring(0, doc.link.length - 5) + '">' + html.toString().substring(h1begin, h1end) + '</a>';
+
         const d = doc.time;
-        result += '<section>' +
+        result += '<br>' +
         d.getFullYear() + '/' +
         (d.getMonth() + 1) + '/' +
         d.getDate() + ' ' +
         d.getHours() + ':' +
-        d.getMinutes(); 
-        let h1begin = html.toString().indexOf('<h1>');
-        let h1end = html.toString().indexOf('</h1>') + 5;
-        result += '<a href="' + doc.link.substring(0, doc.link.length - 5) + '">' + html.toString().substring(h1begin, h1end) + '</a>';
+        d.getMinutes() + '<br>'; 
         result += html.toString().substring(begin, end);
       }
       begin = html.toString().indexOf('<article>') + 9;
