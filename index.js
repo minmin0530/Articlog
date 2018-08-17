@@ -34,6 +34,7 @@ const insertSrc = (db, src, callback) => {
     callback(result);
   });
 }
+
 const insertImg = (db, src, callback) => {
   const collection = db.collection('img');
   collection.insert(src, (err, result) => {
@@ -220,7 +221,15 @@ function linkSrc() {
     collection.find({}).toArray( (err, docs) => {
       for (const doc of docs) {
         app.get('/' + doc.link, (req, res) => {
-          res.sendFile(__dirname + '/src/' + doc.link);
+          const userAgent = req.headers['user-agent'].toLowerCase();
+          if(doc.link.indexOf('.css') != -1 && (
+             userAgent.indexOf('android') != -1 ||
+             userAgent.indexOf('iphone') != -1 ||
+             userAgent.indexOf('ipod') != -1)){
+            res.sendFile(__dirname + '/src/m_' + doc.link);
+            } else{
+            res.sendFile(__dirname + '/src/' + doc.link);
+          }
         });
       }
     });
