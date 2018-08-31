@@ -218,12 +218,18 @@ io.sockets.on('connection', (socket) => {
       const db = client.db(dbName);
       const collection = db.collection('article');
       collection.remove({ _id: ObjectId(linkData._id) }, (err, docs) => {
-        if (err) {console.log(err);}
-        else {
-          console.log('delete' + linkData._id);
-          linkArticle();
-          socket.emit('delete_article', linkData);
-        }
+        linkArticle();
+        socket.emit('delete_article', linkData);
+      });
+    });
+  });
+  socket.on('delete_src', (linkData) => {
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
+      const db = client.db(dbName);
+      const collection = db.collection('src');
+      collection.remove({ _id: ObjectId(linkData._id) }, (err, docs) => {
+        linkArticle();
+        socket.emit('delete_src', linkData);
       });
     });
   });

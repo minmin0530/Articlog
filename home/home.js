@@ -202,6 +202,10 @@ class Home {
     this.socket.on('src_list', (list) => {
       this.article.innerHTML = '';
       for (const item of list) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.addEventListener('click', this.delete_src, false);
+        deleteBtn.eventParam = item;
+        deleteBtn.textContent = "削除" + item._id;
         const btn = document.createElement('button');
         btn.addEventListener('click', this.edit_src, false);
         btn.eventParam = item.link;
@@ -211,6 +215,7 @@ class Home {
         span.textContent = item.link;
         this.article.appendChild(span);
         this.article.appendChild(btn);
+        this.article.appendChild(deletebtn);
         ++this.l;
       }
     });
@@ -260,6 +265,25 @@ class Home {
 
     });
   }
+  delete_src(event) {
+    home.socket.emit('delete_src', event.target.eventParam);
+    home.socket.on('delete_src', (data) => {
+      const deleteCard = document.createElement('div');
+      deleteCard.style.position = "absolute";
+      deleteCard.style.top = "400px";
+      deleteCard.style.left = "600px";
+      deleteCard.style.width = "400px";
+      deleteCard.style.height = "200px";
+      deleteCard.style.background = "#fff";
+      deleteCard.style.border = "solid #008 5px";
+      deleteCard.style.padding = "50px";
+      deleteCard.innerHTML = "削除できました。";
+
+      document.body.appendChild(deleteCard);
+
+    });
+  }
+
   edit(event) {
     home.socket.emit('edit_article', event.target.eventParam);
     home.socket.on('edit_article', (data) => {
