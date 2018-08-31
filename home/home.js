@@ -215,7 +215,7 @@ class Home {
         span.textContent = item.link;
         this.article.appendChild(span);
         this.article.appendChild(btn);
-        this.article.appendChild(deletebtn);
+        this.article.appendChild(deleteBtn);
         ++this.l;
       }
     });
