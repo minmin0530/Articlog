@@ -217,7 +217,11 @@ io.sockets.on('connection', (socket) => {
       const db = client.db(dbName);
       const collection = db.collection('article');
       collection.deleteOne({ _id: linkData._id }, (err, docs) => {
-        console.log('delete' + linkData._id);
+        if (err) {console.log(err);}
+        else {
+          console.log('delete' + linkData._id);
+          linkArticle();
+        }
       });
     });
   });
