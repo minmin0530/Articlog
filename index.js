@@ -216,7 +216,7 @@ io.sockets.on('connection', (socket) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
       const db = client.db(dbName);
       const collection = db.collection('article');
-      collection.remove({ "_id": "" + linkData._id.toString() }, (err, docs) => {
+      collection.remove({ _id: ObjectId(linkData._id) }, (err, docs) => {
         if (err) {console.log(err);}
         else {
           console.log('delete' + linkData._id);
