@@ -244,6 +244,21 @@ class Home {
   }
   delete_article(event) {
     home.socket.emit('delete_article', event.target.eventParam);
+    home.socket.on('delete_article', (data) => {
+      const deleteCard = document.createElement('div');
+      deleteCard.style.position = "absolute";
+      deleteCard.style.top = "400px";
+      deleteCard.style.left = "600px";
+      deleteCard.style.width = "400px";
+      deleteCard.style.height = "200px";
+      deleteCard.style.background = "#fff";
+      deleteCard.style.border = "solid #008 5px";
+      deleteCard.style.padding = "50px";
+      deleteCard.innerHTML = "削除できました。";
+
+      document.body.appendChild(deleteCard);
+
+    });
   }
   edit(event) {
     home.socket.emit('edit_article', event.target.eventParam);
