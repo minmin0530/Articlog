@@ -179,6 +179,10 @@ class Home {
       this.article.innerHTML = '';
 
       for (const item of list) {
+        const deleteBtn = document.createElement('button');
+        deleteBtn.addEventListener('click', this.delete_article, false);
+        deleteBtn.eventParam = item;
+        deleteBtn.textContent = "削除" + item._id;
         const btn = document.createElement('button');
         btn.addEventListener('click', this.edit, false);
         btn.eventParam = item.link;
@@ -188,6 +192,7 @@ class Home {
         a.textContent = item.link.substring(0, item.link.length - 5);
         this.article.appendChild(a);
         this.article.appendChild(btn);
+        this.article.appendChild(deleteBtn);
         ++this.l;
       }
     });
@@ -236,6 +241,9 @@ class Home {
     this.article.appendChild(this.plugin_uploadDiv);
   }
   change(file) {
+  }
+  delete_article(event) {
+    home.socket.emit('delete_article', event.target.eventParam);
   }
   edit(event) {
     home.socket.emit('edit_article', event.target.eventParam);

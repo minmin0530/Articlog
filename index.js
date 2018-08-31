@@ -100,6 +100,19 @@ const removeAllDocument = function(db, callback) {
   });    
 }
 */
+const removeDocument = function(db, callback) {
+  // Get the documents collection
+  const collection = db.collection('documents');
+  // Delete document where a is 3
+  collection.deleteOne({ a : 3 }, function(err, result) {
+    assert.equal(err, null);
+    assert.equal(1, result.result.n);
+    console.log("Removed the document with the field a equal to 3");
+    callback(result);
+  });    
+}
+
+
 
 const options = {
   key: fs.readFileSync('/etc/letsencrypt/live/articlog.com/privkey.pem'),
@@ -198,6 +211,17 @@ io.sockets.on('connection', (socket) => {
     fs.writeFileSync(__dirname + '/html/' + publishData.link + '.html', publishData.content);
     socket.emit('edit_published', publishData);
   });
+
+  socket.on('delete_article', (linkData) => {
+    MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
+      const db = client.db(dbName);
+      const collection = db.collection('img');
+      collection.deleteOne({ _id: linkData._id }, (err, docs) => {
+        console.log('delete' + linkData._id);
+      });
+    });
+  });
+
 });
 function linkImg() {
   MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {     
