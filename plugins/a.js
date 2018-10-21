@@ -1,7 +1,7 @@
 class PluginTest1 {
   constructor() {
   }
-  async print(MongoClient, url, dbName, fs, __dirname) {
+  async print(MongoClient, url, dbName, fs, __dirname, io) {
 
     async function returnHTML() {
       let result = '';
@@ -17,7 +17,13 @@ class PluginTest1 {
       let begin = 0;
       let end = 0;
       const cursor = db.collection('article').find({}).sort({'_id': -1});
-      while(await cursor.hasNext()) {
+
+      io.sockets.on('connection', (socket) => {
+        alert("connected.");
+      });
+
+      for (let l = 0; l < 4; ++l) {
+      //while(await cursor.hasNext()) {
         let doc   = await cursor.next();
         html      = await fs.readFileSync(__dirname + '/html/' + doc.link);
         begin     = html.toString().indexOf('<section>') + 9;
@@ -40,10 +46,11 @@ class PluginTest1 {
       end = html.toString().indexOf('</article>');
       const begin_html = html.toString().substring(0, begin);
       const end_html = html.toString().substring(end, html.length);
+      const pagination = '<button onclick="nextPage();">次へ</button><script>function nextPage(){ alert("test"); };</script>';
     
       //DB切断
       await client.close()
-      return begin_html + result + end_html;
+      return begin_html + result + pagination + end_html;
     }
     return await returnHTML();
   }

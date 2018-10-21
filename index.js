@@ -378,7 +378,7 @@ app.get('/', function(req, res) {
     for (var v = 0; v < pluginObjects.length; ++v) {
       var obj = loadObject(fs, pluginObjects[v]);
       var pluginTest = new obj();
-      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname) + '<br>';
+      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname, io) + '<br>';
     }
     res.send(result);
   };
