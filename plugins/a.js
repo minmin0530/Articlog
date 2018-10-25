@@ -49,9 +49,7 @@ class PluginTest1 {
       end = html.toString().indexOf('</article>');
       const begin_html = html.toString().substring(0, begin);
       const end_html = html.toString().substring(end, html.length);
-     const pagination = '<button onclick="nextPage();">次へ</button><script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>';
-      pagination += '<script>function nextPage() { io().socket.emit("nextPage"); }';
-      pagination += '</script>';
+      const pagination = '<a href="next20">次へ</a>';
       //DB切断
       await client.close()
       return begin_html + result + pagination + end_html;
