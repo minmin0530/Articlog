@@ -121,10 +121,14 @@ const options = {
 };
  
 const server = https.createServer(options, app);
-let global_socket;
+
 const io = require('socket.io')(server);
 io.sockets.on('connection', (socket) => {
-  global_socket = socket;
+
+  socket.on('nextPage', () => {
+    console.log("nextPage.");
+  });
+
   socket.on('loginData', (loginData) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
       const db = client.db(dbName);
@@ -378,7 +382,7 @@ app.get('/', function(req, res) {
     for (var v = 0; v < pluginObjects.length; ++v) {
       var obj = loadObject(fs, pluginObjects[v]);
       var pluginTest = new obj();
-      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname, global_socket) + '<br>';
+      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname) + '<br>';
     }
     res.send(result);
   };
