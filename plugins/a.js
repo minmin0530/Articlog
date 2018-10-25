@@ -25,8 +25,8 @@ class PluginTest1 {
       //   console.log("connected.");
       // });
 
-      // for (let l = 0; l < 4; ++l) {
-      while(await cursor.hasNext()) {
+      for (let l = 0; l < 10; ++l) {
+//      while(await cursor.hasNext()) {
         let doc   = await cursor.next();
         html      = await fs.readFileSync(__dirname + '/html/' + doc.link);
         begin     = html.toString().indexOf('<section>') + 9;
