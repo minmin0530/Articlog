@@ -1,7 +1,7 @@
 class PluginTest1 {
   constructor() {
   }
-  async print(MongoClient, url, dbName, fs, __dirname, socket) {
+  async print(MongoClient, url, dbName, fs, __dirname, io) {
 
     async function returnHTML() {
       let result = '';
@@ -18,9 +18,12 @@ class PluginTest1 {
       let end = 0;
       const cursor = db.collection('article').find({}).sort({'_id': -1});
 
-        socket.on('nextPage', () => {
-          console.log("nextPage.");
-        });
+      // io.sockets.on('connection', (socket) => {
+      //   socket.on('nextPage', () => {
+      //     console.log("nextPage.");
+      //   });
+      //   console.log("connected.");
+      // });
 
       // for (let l = 0; l < 4; ++l) {
       while(await cursor.hasNext()) {
@@ -46,13 +49,13 @@ class PluginTest1 {
       end = html.toString().indexOf('</article>');
       const begin_html = html.toString().substring(0, begin);
       const end_html = html.toString().substring(end, html.length);
-      const pagination = '<button onclick="nextPage();">次へ</button><script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>';
-      pagination += '<script>function nextPage() { io().socket.emit("nextPage"); }';
-      pagination += '</script>';
+//      const pagination = '<button onclick="nextPage();">次へ</button><script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script>';
+      // pagination += '<script>function nextPage() { io().socket.emit("nextPage"); }';
+      // pagination += '</script>';
       //DB切断
       await client.close()
-      return begin_html + result + pagination + end_html;
-      //return begin_html + result + end_html;
+      // return begin_html + result + pagination + end_html;
+      return begin_html + result + end_html;
     }
     return await returnHTML();
   }
