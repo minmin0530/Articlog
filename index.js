@@ -413,7 +413,7 @@ async function returnHTML(num) {
   // return begin_html + result + end_html;
 }
 
-async function awaitHTML(num) {
+async function awaitHTML(num, res) {
   res.send(await returnHTML(num));  
 }
 
@@ -421,10 +421,10 @@ async function awaitHTML(num) {
 
 
 app.get('/next20', (req, res) => {
-  awaitHTML(10);
+  awaitHTML(10, res);
 });
 app.get('/next30', (req, res) => {
-  awaitHTML(20);
+  awaitHTML(20, res);
 });
 
 app.get('/', (req, res) => {
