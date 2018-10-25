@@ -406,7 +406,7 @@ async function returnHTML(num) {
   end = html.toString().indexOf('</article>');
   const begin_html = html.toString().substring(0, begin);
   const end_html = html.toString().substring(end, html.length);
-  const pagination = '<a href="/">前へ</a>...<a href="next30">次へ</a>';
+  const pagination = '<a href="/">最初へ</a>...<a href="next' +(num + 20)+ '">次へ</a>';
   //DB切断
   await client.close()
   return begin_html + result + pagination + end_html;
