@@ -1,7 +1,7 @@
 class PluginTest1 {
   constructor() {
   }
-  async print(MongoClient, url, dbName, fs, __dirname, io) {
+  async print(MongoClient, url, dbName, fs, __dirname, socket) {
 
     async function returnHTML() {
       let result = '';
@@ -19,9 +19,9 @@ class PluginTest1 {
       const cursor = db.collection('article').find({}).sort({'_id': -1});
 
       // io.sockets.on('connection', (socket) => {
-      //   socket.on('nextPage', () => {
-      //     console.log("nextPage.");
-      //   });
+        socket.on('nextPage', () => {
+          console.log("nextPage.");
+        });
       //   console.log("connected.");
       // });
 
