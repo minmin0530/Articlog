@@ -121,34 +121,10 @@ const options = {
 };
  
 const server = https.createServer(options, app);
-
+let global_socket;
 const io = require('socket.io')(server);
 io.sockets.on('connection', (socket) => {
-
-  app.get('/', function(req, res) {
-    let pluginsDir = path.join(__dirname, 'plugins');
-    let pluginObjects = [];
-    fs.readdirSync(pluginsDir).forEach(file => {
-      if (path.extname(file) !== '.js') {
-        return;
-      }
-      pluginObjects.push( path.join(pluginsDir, file));
-    });
-  
-    async function awaitPlugin() {
-      let result = '';
-      for (var v = 0; v < pluginObjects.length; ++v) {
-        var obj = loadObject(fs, pluginObjects[v]);
-        var pluginTest = new obj();
-        result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname, socket) + '<br>';
-      }
-      res.send(result);
-    };
-    awaitPlugin();
-  
-  });
-  
-
+  global_socket = socket;
   socket.on('loginData', (loginData) => {
     MongoClient.connect(url, {useNewUrlParser: true}, (err, client) => {
       const db = client.db(dbName);
@@ -387,6 +363,28 @@ app.get('/home', (req, res) => {  res.sendFile(__dirname + '/home/home.html'); }
 app.get('/home.js', (req, res) => {  res.sendFile(__dirname + '/home/home.js'); });
 app.get('/home.css', (req, res) => {  res.sendFile(__dirname + '/home/home.css'); });
 
+app.get('/', function(req, res) {
+  let pluginsDir = path.join(__dirname, 'plugins');
+  let pluginObjects = [];
+  fs.readdirSync(pluginsDir).forEach(file => {
+    if (path.extname(file) !== '.js') {
+      return;
+    }
+    pluginObjects.push( path.join(pluginsDir, file));
+  });
+
+  async function awaitPlugin() {
+    let result = '';
+    for (var v = 0; v < pluginObjects.length; ++v) {
+      var obj = loadObject(fs, pluginObjects[v]);
+      var pluginTest = new obj();
+      result += await pluginTest.print(MongoClient, url, dbName, fs, __dirname, global_socket) + '<br>';
+    }
+    res.send(result);
+  };
+  awaitPlugin();
+
+});
 
 function loadObject (fs, file) {
   var sandbox = {};
