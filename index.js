@@ -419,7 +419,7 @@ app.get('/next20', (req, res) => {
     const pagination = '<a href="/">前へ</a>...<a href="next30">次へ</a>';
     //DB切断
     await client.close()
-    return pagination;//begin_html + result + pagination + end_html;
+    return begin_html + result + pagination + end_html;
     // return begin_html + result + end_html;
   }
 
