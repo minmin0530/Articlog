@@ -422,7 +422,13 @@ app.get('/next20', (req, res) => {
     return pagination;//begin_html + result + pagination + end_html;
     // return begin_html + result + end_html;
   }
-  res.send(returnHTML());  
+
+  async function awaitHTML() {
+    res.send(await returnHTML());  
+  }
+
+  awaitHTML();
+
 });
 app.get('/', (req, res) => {
   let pluginsDir = path.join(__dirname, 'plugins');
