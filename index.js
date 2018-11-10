@@ -366,6 +366,7 @@ app.get('/login.js', (req, res) => {  res.sendFile(__dirname + '/home/login.js')
 app.get('/home', (req, res) => {  res.sendFile(__dirname + '/home/home.html'); });
 app.get('/home.js', (req, res) => {  res.sendFile(__dirname + '/home/home.js'); });
 app.get('/home.css', (req, res) => {  res.sendFile(__dirname + '/home/home.css'); });
+app.get('/blog.css', (req, res) => {  res.sendFile(__dirname + '/src/blog.css'); });
 
 
 async function returnHTML(num) {
